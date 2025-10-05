@@ -90,7 +90,10 @@ const PracticeSection = () => {
           `What is the name of this letter: "${focusLetter.greekLetter}"?`,
           `Which letter sounds like "${focusLetter.exampleWords[0]}"?`,
           `What letter should you use for the "${focusLetter.englishSound}" sound?`,
-          `Which of these is "${focusLetter.name}"?`
+          `Looking at the shape "${focusLetter.greekLetter}", what sound does it make?`,
+          `If you see "${focusLetter.greekLetter}" in Greek text, how would you pronounce it?`,
+          `Which letter represents the "${focusLetter.englishSound}" sound in Greek?`,
+          `What Greek letter would you use to write the "${focusLetter.englishSound}" sound?`
         ];
         const randomLetterPattern = letterQuestionPatterns[Math.floor(Math.random() * letterQuestionPatterns.length)];
 
@@ -109,7 +112,10 @@ const PracticeSection = () => {
           `How do you pronounce "${focusLetter.greekLetter}"?`,
           `What is the English sound for "${focusLetter.greekLetter}"?`,
           `If you see "${focusLetter.greekLetter}", what sound do you make?`,
-          `What pronunciation matches "${focusLetter.greekLetter}"?`
+          `What pronunciation matches "${focusLetter.greekLetter}"?`,
+          `When you encounter "${focusLetter.greekLetter}" in Greek writing, what sound does it represent?`,
+          `How would you say "${focusLetter.greekLetter}" out loud?`,
+          `What English sound is closest to how "${focusLetter.greekLetter}" is pronounced?`
         ];
         const randomSoundQuestionPattern = soundQuestionPatterns[Math.floor(Math.random() * soundQuestionPatterns.length)];
 
@@ -128,7 +134,10 @@ const PracticeSection = () => {
           `Which letter sounds like "${focusLetter.exampleWords[0]}"?`,
           `What letter should you use for the "${focusLetter.englishSound}" sound?`,
           `If you want to make the "${focusLetter.englishSound}" sound, which letter do you use?`,
-          `Which of these letters makes the "${focusLetter.englishSound}" sound?`
+          `Which of these letters makes the "${focusLetter.englishSound}" sound?`,
+          `To write the "${focusLetter.englishSound}" sound in Greek, which letter would you choose?`,
+          `If you hear the "${focusLetter.englishSound}" sound, which Greek letter represents it?`,
+          `Which Greek letter corresponds to the "${focusLetter.englishSound}" pronunciation?`
         ];
         const randomReversePattern = reverseQuestionPatterns[Math.floor(Math.random() * reverseQuestionPatterns.length)];
 
@@ -173,7 +182,10 @@ const PracticeSection = () => {
           `What letter would you use to start writing "${displayWord}" in Greek?`,
           `Which Greek letter sounds like the beginning of "${displayWord}"?`,
           `If "${displayWord}" starts with the "${focusLetter.englishSound}" sound, which letter is it?`,
-          `Which letter represents the sound at the start of "${displayWord}"?`
+          `Which letter represents the sound at the start of "${displayWord}"?`,
+          `The word "${displayWord}" begins with the "${focusLetter.englishSound}" sound. Which Greek letter matches that?`,
+          `To write "${displayWord}" in Greek, you'd start with which letter for the "${focusLetter.englishSound}" sound?`,
+          `Which Greek letter would you use for the initial sound in "${displayWord}"?`
         ];
         const randomAssociationQuestionPattern = associationQuestionPatterns[Math.floor(Math.random() * associationQuestionPatterns.length)];
 
