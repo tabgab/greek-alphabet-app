@@ -14,7 +14,16 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 1,
     visualAid: 'Think of it as an upside-down "A" without the bar',
-    commonWords: ['άλφα', 'αέρας (air)', 'άνθρωπος (human)']
+    commonWords: [
+      'άλφα (alpha)',
+      'αέρας (air)',
+      'άνθρωπος (human)',
+      'αυτός (this)',
+      'αλλά (but)',
+      'αγάπη (love)',
+      'αυτοκίνητο (car)',
+      'αδερφός (brother)'
+    ]
   },
   {
     id: 2,
@@ -28,7 +37,16 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 1,
     visualAid: 'Like a "B" but with the loops connected',
-    commonWords: ['βήτα', 'μπάλα (ball)', 'βιβλίο (book)']
+    commonWords: [
+      'βήτα (beta)',
+      'μπάλα (ball)',
+      'βιβλίο (book)',
+      'βασιλιάς (king)',
+      'μπαμπάς (dad)',
+      'βαλίτσα (suitcase)',
+      'μπουκάλι (bottle)',
+      'μπαλκόνι (balcony)'
+    ]
   },
   {
     id: 3,
@@ -42,7 +60,16 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like an upside-down "L" or a right angle',
-    commonWords: ['γάμμα', 'γάτα (cat)', 'γρήγορος (fast)']
+    commonWords: [
+      'γάμμα (gamma)',
+      'γάτα (cat)',
+      'γρήγορος (fast)',
+      'γυναίκα (woman)',
+      'γράμμα (letter)',
+      'γέφυρα (bridge)',
+      'γυαλί (glass)',
+      'γιορτή (celebration)'
+    ]
   },
   {
     id: 4,
@@ -56,7 +83,16 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like a triangle pointing up',
-    commonWords: ['δέλτα', 'δέντρο (tree)', 'δρόμος (road)']
+    commonWords: [
+      'δέλτα (delta)',
+      'δέντρο (tree)',
+      'δρόμος (road)',
+      'δάσκαλος (teacher)',
+      'δωμάτιο (room)',
+      'δεξιά (right)',
+      'δυο (two)',
+      'δουλειά (work)'
+    ]
   },
   {
     id: 5,
@@ -70,7 +106,17 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 1,
     visualAid: 'Like a backwards "3" or a square "E"',
-    commonWords: ['έψιλον', 'ένα (one)', 'εγώ (I)']
+    commonWords: [
+      'έψιλον (epsilon)',
+      'ένα (one)',
+      'εγώ (I)',
+      'εσύ (you)',
+      'εδώ (here)',
+      'έξω (outside)',
+      'ελληνικά (Greek language)',
+      'εστιατόριο (restaurant)',
+      'εφημερίδα (newspaper)'
+    ]
   },
   {
     id: 6,
@@ -84,7 +130,16 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 3,
     visualAid: 'Like a "Z" but with a horizontal line through it',
-    commonWords: ['ζήτα', 'ζώο (animal)', 'ζέστη (heat)']
+    commonWords: [
+      'ζήτα (zeta)',
+      'ζώο (animal)',
+      'ζέστη (heat)',
+      'ζωή (life)',
+      'ζωγραφιά (painting)',
+      'ζαχαρούχο (sugary)',
+      'ζώνη (belt)',
+      'ζυμαρικά (pasta)'
+    ]
   },
   {
     id: 7,
@@ -98,7 +153,16 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 2,
     visualAid: 'Like an "H" or a square "n"',
-    commonWords: ['ήτα', 'ήλιος (sun)', 'ήρεμος (calm)']
+    commonWords: [
+      'ήτα (eta)',
+      'ήλιος (sun)',
+      'ήρεμος (calm)',
+      'ήδη (already)',
+      'ήχος (sound)',
+      'ήρωας (hero)',
+      'ήσυχος (quiet)',
+      'ήπειρος (continent)'
+    ]
   },
   {
     id: 8,
@@ -112,7 +176,16 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 3,
     visualAid: 'Like an "O" with a horizontal line through the middle',
-    commonWords: ['θήτα', 'θέατρο (theater)', 'θεός (god)']
+    commonWords: [
+      'θήτα (theta)',
+      'θέατρο (theater)',
+      'θεός (god)',
+      'θέλω (want)',
+      'θερμός (hot)',
+      'θέμα (topic)',
+      'θεία (aunt)',
+      'θεωρία (theory)'
+    ]
   },
   {
     id: 9,
@@ -126,7 +199,16 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 1,
     visualAid: 'Like a straight line "I"',
-    commonWords: ['ιώτα', 'ιδέα (idea)', 'ίσως (maybe)']
+    commonWords: [
+      'ιώτα (iota)',
+      'ιδέα (idea)',
+      'ίσως (maybe)',
+      'είμαι (am/are)',
+      'ιδιος (own)',
+      'ιερός (sacred)',
+      'ιστορία (history)',
+      'ιδιωτικός (private)'
+    ]
   },
   {
     id: 10,
@@ -140,7 +222,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 1,
     visualAid: 'Like a "K" without the bottom line',
-    commonWords: ['κάππα', 'καλό (good)', 'κόκκινος (red)']
+    commonWords: [
+      'κάππα (kappa)',
+      'καλό (good)',
+      'κόκκινος (red)',
+      'καιρός (weather)',
+      'καφές (coffee)',
+      'κάθε (each)',
+      'κεντρικός (central)',
+      'καθαρός (clean)',
+      'κοντά (near)'
+    ]
   },
   {
     id: 11,
@@ -154,7 +246,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like an upside-down "V" or a triangle without base',
-    commonWords: ['λάμδα', 'λάθος (wrong)', 'λόγος (word)']
+    commonWords: [
+      'λάμδα (lambda)',
+      'λάθος (wrong)',
+      'λόγος (word)',
+      'λεπτό (minute)',
+      'λιώνω (melt)',
+      'λευκός (white)',
+      'λαχανικά (vegetables)',
+      'λυπημένος (sad)',
+      'λόφος (hill)'
+    ]
   },
   {
     id: 12,
@@ -168,7 +270,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 1,
     visualAid: 'Like an "M" but with curved sides',
-    commonWords: ['μυ', 'μαμά (mom)', 'μήλο (apple)']
+    commonWords: [
+      'μυ (mu)',
+      'μαμά (mom)',
+      'μήλο (apple)',
+      'μαζί (together)',
+      'μουσική (music)',
+      'μαύρος (black)',
+      'μάτι (eye)',
+      'μικρός (small)',
+      'μόνος (alone)'
+    ]
   },
   {
     id: 13,
@@ -182,7 +294,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 1,
     visualAid: 'Like a "N" but with the diagonal line straighter',
-    commonWords: ['νυ', 'ναι (yes)', 'νούμερο (number)']
+    commonWords: [
+      'νυ (nu)',
+      'ναι (yes)',
+      'νούμερο (number)',
+      'νέος (new)',
+      'νοσοκομείο (hospital)',
+      'νόμος (law)',
+      'νύχτα (night)',
+      'νησί (island)',
+      'νόστιμος (tasty)'
+    ]
   },
   {
     id: 14,
@@ -196,7 +318,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 4,
     visualAid: 'Like three horizontal lines of different lengths',
-    commonWords: ['ξι', 'ξένος (stranger)', 'ξενοδοχείο (hotel)']
+    commonWords: [
+      'ξι (xi)',
+      'ξένος (stranger)',
+      'ξενοδοχείο (hotel)',
+      'ξαδέρφη (cousin)',
+      'ξύλο (wood)',
+      'ξέχασα (forgot)',
+      'ξανθός (blonde)',
+      'ξηρός (dry)',
+      'ξυπνάω (wake up)'
+    ]
   },
   {
     id: 15,
@@ -210,7 +342,17 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 1,
     visualAid: 'Like a perfect circle "O"',
-    commonWords: ['όμικρον', 'όμορφος (beautiful)', 'όνομα (name)']
+    commonWords: [
+      'όμικρον (omicron)',
+      'όμορφος (beautiful)',
+      'όνομα (name)',
+      'όπου (where)',
+      'όχι (no)',
+      'όροφος (floor)',
+      'όλα (all)',
+      'όμοιος (similar)',
+      'όσο (as much as)'
+    ]
   },
   {
     id: 16,
@@ -224,7 +366,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like a "n" with a horizontal line on top',
-    commonWords: ['πι', 'πίτα (pie)', 'παιδί (child)']
+    commonWords: [
+      'πι (pi)',
+      'πίτα (pie)',
+      'παιδί (child)',
+      'πρώτος (first)',
+      'πόλη (city)',
+      'πράσινος (green)',
+      'παράδειγμα (example)',
+      'πηγαίνω (go)',
+      'πολύ (very)'
+    ]
   },
   {
     id: 17,
@@ -238,7 +390,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like a "P" without the loop closed',
-    commonWords: ['ρω', 'ρόδα (rose)', 'ρήμα (verb)']
+    commonWords: [
+      'ρω (rho)',
+      'ρόδα (rose)',
+      'ρήμα (verb)',
+      'ρεπόρτερ (reporter)',
+      'ρήγας (king)',
+      'ρούχα (clothes)',
+      'ρόλος (role)',
+      'ρίχνω (throw)',
+      'ραβδί (stick)'
+    ]
   },
   {
     id: 18,
@@ -252,7 +414,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 2,
     visualAid: 'Like a "C" rotated 90 degrees clockwise, or "ς" at end of words',
-    commonWords: ['σίγμα', 'σημαία (flag)', 'σπίτι (house)']
+    commonWords: [
+      'σίγμα (sigma)',
+      'σημαία (flag)',
+      'σπίτι (house)',
+      'σαν (like)',
+      'σήμερα (today)',
+      'σχολείο (school)',
+      'σύζυγος (spouse)',
+      'συγνώμη (sorry)',
+      'σώμα (body)'
+    ]
   },
   {
     id: 19,
@@ -266,7 +438,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 1,
     visualAid: 'Like a "T" without the left side',
-    commonWords: ['ταυ', 'τραπέζι (table)', 'τηλέφωνο (phone)']
+    commonWords: [
+      'ταυ (tau)',
+      'τραπέζι (table)',
+      'τηλέφωνο (phone)',
+      'τέλος (end)',
+      'τέχνη (art)',
+      'τόπος (place)',
+      'τυχαίος (random)',
+      'τρελός (crazy)',
+      'τυρί (cheese)'
+    ]
   },
   {
     id: 20,
@@ -280,7 +462,17 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 3,
     visualAid: 'Like a "Y" or a "u" with a tail',
-    commonWords: ['ύψιλον', 'ύμνος (hymn)', 'υγιής (healthy)']
+    commonWords: [
+      'ύψιλον (upsilon)',
+      'ύμνος (hymn)',
+      'υγιής (healthy)',
+      'υπό (under)',
+      'υπάρχω (exist)',
+      'υψηλός (high)',
+      'υπολογιστή (computer)',
+      'υπεύθυνος (responsible)',
+      'υδραυλικός (plumber)'
+    ]
   },
   {
     id: 21,
@@ -294,7 +486,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 3,
     visualAid: 'Like an "O" with a vertical line through it',
-    commonWords: ['φι', 'φίλος (friend)', 'φως (light)']
+    commonWords: [
+      'φι (phi)',
+      'φίλος (friend)',
+      'φως (light)',
+      'φαγητό (food)',
+      'φυσικά (naturally)',
+      'φοιτητής (student)',
+      'φωτιά (fire)',
+      'φάρμακο (medicine)',
+      'φίδι (snake)'
+    ]
   },
   {
     id: 22,
@@ -308,7 +510,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 4,
     visualAid: 'Like an "X" or two crossing lines',
-    commonWords: ['χι', 'χρόνος (time)', 'χέρι (hand)']
+    commonWords: [
+      'χι (chi)',
+      'χρόνος (time)',
+      'χέρι (hand)',
+      'χρήμα (money)',
+      'χώρος (space)',
+      'χαρά (joy)',
+      'χθες (yesterday)',
+      'χήρα (widow)',
+      'χαμόγελο (smile)'
+    ]
   },
   {
     id: 23,
@@ -322,7 +534,17 @@ export const greekAlphabet = [
     category: 'consonant',
     difficulty: 4,
     visualAid: 'Like a trident or "n" with a vertical line',
-    commonWords: ['ψι', 'ψυχή (soul)', 'ψάρι (fish)']
+    commonWords: [
+      'ψι (psi)',
+      'ψυχή (soul)',
+      'ψάρι (fish)',
+      'ψέμα (lie)',
+      'ψυγείο (fridge)',
+      'ψήφος (vote)',
+      'ψαλιδίζει (cuts)',
+      'ψιλή (fine)',
+      'ψύχραιμος (calm)'
+    ]
   },
   {
     id: 24,
@@ -336,7 +558,17 @@ export const greekAlphabet = [
     category: 'vowel',
     difficulty: 2,
     visualAid: 'Like a rounded "W" or horseshoe shape',
-    commonWords: ['ωμέγα', 'ωραίος (beautiful)', 'ώμος (shoulder)']
+    commonWords: [
+      'ωμέγα (omega)',
+      'ωραίος (beautiful)',
+      'ώμος (shoulder)',
+      'ώρα (hour)',
+      'ωκεανός (ocean)',
+      'ώστε (so that)',
+      'ωφέλιμος (beneficial)',
+      'ώριμος (ripe)',
+      'ωραίο (nice)'
+    ]
   }
 ];
 
