@@ -276,7 +276,7 @@ export const greekAlphabet = [
     englishSound: 'ee',
     englishComparison: 'Like "ee" in "free" (French u)',
     pictogram: 'y', // Visual representation
-    exampleWords: ['free', 'university', 'upsilon'],
+    exampleWords: ['free', 'machine', 'unique'],
     category: 'vowel',
     difficulty: 3,
     visualAid: 'Like a "Y" or a "u" with a tail',

@@ -887,6 +887,296 @@ button {
   animation: celebrate 0.6s ease-in-out;
 }
 
+/* Enhanced Progress Goals Section */
+.progress-goals {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.level-progress {
+  display: grid;
+  gap: 2rem;
+}
+
+.current-level h4 {
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.current-level p {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.unlock-requirements {
+  background-color: #f8fafc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border-left: 4px solid #3b82f6;
+}
+
+.unlock-requirements h5 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.requirements-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.req-icon {
+  font-size: 1.1rem;
+}
+
+/* Level Letters Status */
+.level-letters h4 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.letters-status {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.letter-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.letter-status.completed {
+  background-color: #f0fdf4;
+  border-color: #10b981;
+}
+
+.letter-status.in-progress {
+  background-color: #fefce8;
+  border-color: #eab308;
+}
+
+.letter-symbol {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #7c3aed;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.letter-progress {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.letter-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.completion-score {
+  background-color: #10b981;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.practice-needed {
+  background-color: #f59e0b;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Exercise Recommendations */
+.exercise-recommendations {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.recommendations {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.recommendation-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+.recommendation-card:hover {
+  background-color: #f1f5f9;
+  transform: translateY(-1px);
+}
+
+.rec-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.rec-content {
+  flex: 1;
+}
+
+.rec-content h4 {
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.rec-content p {
+  color: #64748b;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.rec-reason {
+  font-size: 0.9rem;
+  color: #374151;
+  font-style: italic;
+}
+
+.rec-reason strong {
+  color: #1e293b;
+}
+
+.rec-action {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.rec-action:hover {
+  background-color: #2563eb;
+}
+
+/* Responsive Design for New Progress Features */
+@media (max-width: 768px) {
+  .level-progress {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .letters-status {
+    grid-template-columns: 1fr;
+  }
+
+  .letter-status {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .letter-progress {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .recommendations {
+    grid-template-columns: 1fr;
+  }
+
+  .recommendation-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .rec-action {
+    align-self: stretch;
+  }
+}
+
+/* Level indicator badges */
+.level-indicator {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.level-1 {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.level-2 {
+  background-color: #fed7e2;
+  color: #9d174d;
+}
+
+.level-3 {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.level-4 {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+/* Progress completion states */
+.letter-status.completed .letter-symbol {
+  background-color: #10b981;
+  color: white;
+}
+
+.letter-status.in-progress .letter-symbol {
+  background-color: #f59e0b;
+  color: white;
+}
+
 /* Accessibility Enhancements */
 .skip-link {
   position: absolute;
@@ -995,6 +1285,40 @@ button:focus-visible,
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
   }
+}
+
+/* Progress Section Controls */
+.progress-controls {
+  background-color: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.reset-progress-btn {
+  background-color: #dc2626;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.reset-progress-btn:hover {
+  background-color: #b91c1c;
+}
+
+.reset-note {
+  color: #991b1b;
+  font-size: 0.85rem;
+  margin: 0;
+  font-style: italic;
 }
 
 /* Better color contrast for accessibility */

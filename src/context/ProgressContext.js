@@ -64,6 +64,12 @@ export const ProgressProvider = ({ children }) => {
         [letterId]: Math.max(prev.scores[letterId] || 0, score)
       };
 
+      // Mark letter as completed if score is high enough (>= 80%)
+      const shouldMarkCompleted = score >= 80 && !prev.completedLetters.includes(letterId);
+      const newCompletedLetters = shouldMarkCompleted
+        ? [...new Set([...prev.completedLetters, letterId])]
+        : prev.completedLetters;
+
       // Update exercise statistics
       const newStats = {
         ...prev.exerciseStats,
@@ -80,6 +86,7 @@ export const ProgressProvider = ({ children }) => {
       const currentProgress = {
         ...prev,
         scores: newScores,
+        completedLetters: newCompletedLetters,
         unlockedLetters: unlockedLetters,
         exerciseStats: newStats
       };
@@ -88,6 +95,7 @@ export const ProgressProvider = ({ children }) => {
       return {
         ...prev,
         scores: newScores,
+        completedLetters: newCompletedLetters,
         totalScore: prev.totalScore + score,
         lastPracticeDate: new Date().toISOString(),
         unlockedLetters: unlockedLetters,
@@ -315,6 +323,39 @@ export const ProgressProvider = ({ children }) => {
     };
   };
 
+  // Reset all progress (for testing purposes)
+  const resetAllProgress = () => {
+    const initialProgress = {
+      completedLetters: [],
+      scores: {},
+      currentLevel: 1,
+      totalScore: 0,
+      streakCount: 0,
+      lastPracticeDate: null,
+      achievements: [],
+      unlockedLetters: [1, 2, 3, 4, 5], // Start with first 5 letters (Alpha, Beta, Gamma, Delta, Epsilon)
+      exerciseStats: {
+        totalQuestions: 0,
+        correctAnswers: 0,
+        currentStreak: 0,
+        bestStreak: 0,
+        totalScore: 0,
+        averageScore: 0,
+        studyTimeMinutes: 0,
+        longestStreak: 0
+      },
+      milestones: {
+        lettersCompleted: 0,
+        perfectScores: 0,
+        weeklyGoal: false,
+        monthlyGoal: false
+      }
+    };
+
+    setUserProgress(initialProgress);
+    localStorage.setItem('greek-alphabet-progress', JSON.stringify(initialProgress));
+  };
+
   const value = {
     userProgress,
     markLetterCompleted,
@@ -334,6 +375,7 @@ export const ProgressProvider = ({ children }) => {
     getLockedAchievements,
     getExerciseStats,
     getProgressMetrics,
+    resetAllProgress,
     ACHIEVEMENTS
   };
 

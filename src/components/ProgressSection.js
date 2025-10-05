@@ -7,8 +7,63 @@ const ProgressSection = () => {
     getUnlockedAchievements,
     getLockedAchievements,
     getExerciseStats,
-    getProgressMetrics
+    getProgressMetrics,
+    getAvailableLetters,
+    isLetterCompleted,
+    getBestScore,
+    resetAllProgress
   } = useProgress();
+
+  // Generate exercise recommendations based on progress
+  const getExerciseRecommendations = () => {
+    const availableLetters = getAvailableLetters();
+    const currentLevel = Math.max(...availableLetters.map(letter => letter.difficulty), 1);
+    const levelLetters = availableLetters.filter(letter => letter.difficulty === currentLevel);
+    // const completedInLevel = levelLetters.filter(letter => isLetterCompleted(letter.id)).length; // Used for future calculations
+
+    const recommendations = [];
+
+    // Recommend practicing incomplete letters
+    const incompleteLetters = levelLetters.filter(letter => !isLetterCompleted(letter.id));
+    if (incompleteLetters.length > 0) {
+      recommendations.push({
+        icon: '🎯',
+        title: 'Complete Current Level',
+        description: `Practice ${incompleteLetters.length} remaining Level ${currentLevel} letters`,
+        reason: `Finish ${incompleteLetters.map(l => l.name).join(', ')} to unlock Level ${currentLevel + 1}`
+      });
+    }
+
+    // Recommend specific exercise types based on performance
+    const avgScore = getProgressMetrics().averageScore;
+    if (avgScore < 70) {
+      recommendations.push({
+        icon: '📝',
+        title: 'Build Strong Foundations',
+        description: 'Focus on Multiple Choice and Letter Matching exercises',
+        reason: 'Strengthen your basics before advancing to harder content'
+      });
+    } else if (avgScore > 85) {
+      recommendations.push({
+        icon: '⚡',
+        title: 'Challenge Yourself',
+        description: 'Try Sound Association and Word Association exercises',
+        reason: 'You\'re ready for more advanced pronunciation practice'
+      });
+    }
+
+    // Recommend streak building
+    if (userProgress.streakCount < 5) {
+      recommendations.push({
+        icon: '🔥',
+        title: 'Build Your Streak',
+        description: 'Practice daily to build momentum',
+        reason: 'Consistent practice leads to better retention and unlocks streak achievements'
+      });
+    }
+
+    return recommendations.slice(0, 3); // Limit to 3 recommendations
+  };
 
   const progress = getProgressMetrics();
   const unlockedAchievements = getUnlockedAchievements();
@@ -20,6 +75,20 @@ const ProgressSection = () => {
       <div className="section-header">
         <h2>Your Progress</h2>
         <p>Track your learning journey and celebrate your achievements!</p>
+
+        <div className="progress-controls">
+          <button
+            className="reset-progress-btn"
+            onClick={() => {
+              if (window.confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                resetAllProgress();
+              }
+            }}
+          >
+            🔄 Reset Progress (Testing)
+          </button>
+          <p className="reset-note">⚠️ This will clear all saved progress data</p>
+        </div>
       </div>
 
       <div className="progress-stats">
@@ -128,6 +197,82 @@ const ProgressSection = () => {
               <span className="stat-label">Best Streak</span>
               <span className="stat-value">{stats.bestStreak} days</span>
             </div>
+          </div>
+        </div>
+
+        <div className="progress-goals">
+          <h3>🎯 Next Level Progress</h3>
+          <div className="level-progress">
+            <div className="current-level">
+              <h4>Current Level: {progress.currentLevel}</h4>
+              <p>Master Level {progress.currentLevel} letters to unlock Level {progress.currentLevel + 1}</p>
+
+              {progress.currentLevel < 4 && (
+                <div className="unlock-requirements">
+                  <h5>Requirements for Level {progress.currentLevel + 1}:</h5>
+                  <div className="requirements-list">
+                    <div className="requirement">
+                      <span className="req-icon">📚</span>
+                      <span>Complete all Level {progress.currentLevel} letters</span>
+                    </div>
+                    <div className="requirement">
+                      <span className="req-icon">⭐</span>
+                      <span>Maintain {'>'}70% average score</span>
+                    </div>
+                    <div className="requirement">
+                      <span className="req-icon">🎯</span>
+                      <span>Practice regularly for consistent progress</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="level-letters">
+              <h4>Level {progress.currentLevel} Letters ({getAvailableLetters().length} available)</h4>
+              <div className="letters-status">
+                {getAvailableLetters()
+                  .filter(letter => letter.difficulty === progress.currentLevel)
+                  .map(letter => {
+                    const completed = isLetterCompleted(letter.id);
+                    const bestScore = getBestScore(letter.id);
+                    return (
+                      <div key={letter.id} className={`letter-status ${completed ? 'completed' : 'in-progress'}`}>
+                        <span className="letter-symbol">{letter.greekLetter}</span>
+                        <div className="letter-progress">
+                          <span className="letter-name">{letter.name}</span>
+                          {completed ? (
+                            <span className="completion-score">✓ {bestScore}%</span>
+                          ) : (
+                            <span className="practice-needed">Needs Practice</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="exercise-recommendations">
+          <h3>🎓 Recommended Exercises</h3>
+          <div className="recommendations">
+            {getExerciseRecommendations().map((rec, index) => (
+              <div key={index} className="recommendation-card">
+                <div className="rec-icon">{rec.icon}</div>
+                <div className="rec-content">
+                  <h4>{rec.title}</h4>
+                  <p>{rec.description}</p>
+                  <div className="rec-reason">
+                    <strong>Why:</strong> {rec.reason}
+                  </div>
+                </div>
+                <button className="rec-action" onClick={() => window.location.hash = 'practice'}>
+                  Start Exercise
+                </button>
+              </div>
+            ))}
           </div>
         </div>
 
