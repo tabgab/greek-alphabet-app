@@ -69,7 +69,7 @@ export const greekAlphabet = [
       'γράμμα (letter)',
       'γέφυρα (bridge)',
       'γυαλί (glass)',
-      'γέρος (old man)'
+      'γάλα (milk)'
     ]
   },
   {
