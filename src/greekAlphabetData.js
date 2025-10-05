@@ -39,13 +39,14 @@ export const greekAlphabet = [
     visualAid: 'Like a "B" but with the loops connected',
     commonWords: [
       'βήτα (beta)',
-      'μπάλα (ball)',
       'βιβλίο (book)',
       'βασιλιάς (king)',
-      'μπαμπάς (dad)',
       'βαλίτσα (suitcase)',
-      'μπουκάλι (bottle)',
-      'μπαλκόνι (balcony)'
+      'βενζίνη (gasoline)',
+      'βιταμίνη (vitamin)',
+      'βιολί (violin)',
+      'βραβείο (award)',
+      'βόλος (marble)'
     ]
   },
   {
@@ -322,12 +323,12 @@ export const greekAlphabet = [
       'ξι (xi)',
       'ξένος (stranger)',
       'ξενοδοχείο (hotel)',
-      'ξαδέρφη (cousin)',
       'ξύλο (wood)',
       'ξέχασα (forgot)',
       'ξανθός (blonde)',
       'ξηρός (dry)',
-      'ξυπνάω (wake up)'
+      'ξυπνάω (wake up)',
+      'ξαφνικός (sudden)'
     ]
   },
   {
@@ -394,12 +395,12 @@ export const greekAlphabet = [
       'ρω (rho)',
       'ρόδα (rose)',
       'ρήμα (verb)',
-      'ρεπόρτερ (reporter)',
-      'ρήγας (king)',
       'ρούχα (clothes)',
       'ρόλος (role)',
       'ρίχνω (throw)',
-      'ραβδί (stick)'
+      'ραβδί (stick)',
+      'ρυθμός (rhythm)',
+      'ρέμα (stream)'
     ]
   },
   {
