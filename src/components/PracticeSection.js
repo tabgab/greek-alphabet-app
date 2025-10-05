@@ -235,23 +235,47 @@ const PracticeSection = () => {
         break;
 
       case 'sound-identification':
-        const soundIdentificationPatterns = [
-          `Listen to this sound and identify which letter makes it:`,
-          `Which Greek letter produces this sound when pronounced?`,
-          `What Greek letter should you use to make this sound?`,
-          `Listen carefully - which letter matches this pronunciation?`,
-          `Identify the Greek letter by its sound:`
-        ];
-        const randomSoundPattern = soundIdentificationPatterns[Math.floor(Math.random() * soundIdentificationPatterns.length)];
+        // Select a random Greek word from the letter's examples
+        const availableWords = focusLetter.commonWords.filter(word =>
+          word.includes('(') && word.includes(')')
+        );
 
-        question = {
-          type: 'sound-identification',
-          question: randomSoundPattern,
-          correctAnswer: focusLetter.name,
-          options: [focusLetter, ...distractorLetters].map(l => l.name).sort(() => Math.random() - 0.5),
-          letter: focusLetter,
-          soundToPlay: focusLetter.englishSound
-        };
+        if (availableWords.length === 0) {
+          // Fallback to letter sound if no words available
+          question = {
+            type: 'sound-identification',
+            question: `Listen to this sound and identify which letter makes it:`,
+            correctAnswer: focusLetter.name,
+            options: [focusLetter, ...distractorLetters].map(l => l.name).sort(() => Math.random() - 0.5),
+            letter: focusLetter,
+            soundToPlay: focusLetter.englishSound,
+            isWordBased: false
+          };
+        } else {
+          const randomWordWithTranslation = availableWords[Math.floor(Math.random() * availableWords.length)];
+          // Extract just the Greek word (before the parentheses)
+          const greekWord = randomWordWithTranslation.split('(')[0].trim();
+
+          const wordIdentificationPatterns = [
+            `Listen to this Greek word and identify which letter it starts with:`,
+            `What Greek letter makes the beginning sound of this word?`,
+            `Listen carefully - which letter starts this Greek word?`,
+            `Identify the Greek letter by the starting sound of this word:`,
+            `Which letter sound do you hear at the beginning of this word?`
+          ];
+          const randomWordPattern = wordIdentificationPatterns[Math.floor(Math.random() * wordIdentificationPatterns.length)];
+
+          question = {
+            type: 'sound-identification',
+            question: randomWordPattern,
+            correctAnswer: focusLetter.name,
+            options: [focusLetter, ...distractorLetters].map(l => l.name).sort(() => Math.random() - 0.5),
+            letter: focusLetter,
+            soundToPlay: greekWord,
+            wordToShow: greekWord,
+            isWordBased: true
+          };
+        }
         break;
 
       default:
@@ -470,14 +494,24 @@ const PracticeSection = () => {
                     <div className="sound-identification-container">
                       <div className="sound-prompt">
                         <span className="sound-icon">🔊</span>
-                        <span className="sound-text">Listen to the sound</span>
+                        <span className="sound-text">
+                          {currentQuestion.isWordBased
+                            ? `Listen to the Greek word`
+                            : `Listen to the sound`
+                          }
+                        </span>
                       </div>
+                      {currentQuestion.isWordBased && currentQuestion.wordToShow && (
+                        <div className="word-display">
+                          <span className="greek-word-large">{currentQuestion.wordToShow}</span>
+                        </div>
+                      )}
                       <button
                         className="replay-sound-btn"
                         onClick={() => playLetterSound(currentQuestion.soundToPlay)}
-                        title="Replay the sound"
+                        title={currentQuestion.isWordBased ? "Replay the word" : "Replay the sound"}
                       >
-                        🔄 Replay Sound
+                        🔄 {currentQuestion.isWordBased ? 'Replay Word' : 'Replay Sound'}
                       </button>
                     </div>
                   )}
