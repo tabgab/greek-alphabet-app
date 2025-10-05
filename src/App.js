@@ -1,24 +1,61 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
+// Import components (we'll create these next)
+import Header from './components/Header';
+import Navigation from './components/Navigation';
+import LearnSection from './components/LearnSection';
+import PracticeSection from './components/PracticeSection';
+import ProgressSection from './components/ProgressSection';
+import CheatSheetSection from './components/CheatSheetSection';
+import { ProgressProvider } from './context/ProgressContext';
+
 function App() {
+  const [currentSection, setCurrentSection] = useState('learn');
+
+  const renderSection = () => {
+    switch (currentSection) {
+      case 'learn':
+        return <LearnSection />;
+      case 'practice':
+        return <PracticeSection />;
+      case 'progress':
+        return <ProgressSection />;
+      case 'cheatsheet':
+        return <CheatSheetSection />;
+      default:
+        return <LearnSection />;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+    <ProgressProvider>
+      <div className="App">
+        <Header />
+        <div className="app-container">
+          <Navigation
+            currentSection={currentSection}
+            setCurrentSection={setCurrentSection}
+          />
+          <main
+            className="main-content"
+            role="main"
+            aria-label="Greek alphabet learning content"
+          >
+            {renderSection()}
+          </main>
+        </div>
+
+        {/* Skip to main content link for screen readers */}
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#main-content"
+          className="skip-link"
+          aria-label="Skip to main content"
         >
-          Learn React
+          Skip to main content
         </a>
-      </header>
-    </div>
+      </div>
+    </ProgressProvider>
   );
 }
 
