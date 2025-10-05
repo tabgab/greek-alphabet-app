@@ -21,8 +21,8 @@ export const greekAlphabet = [
       'αυτός (this)',
       'αλλά (but)',
       'αγάπη (love)',
-      'αυτοκίνητο (car)',
-      'αδερφός (brother)'
+      'απλό (simple)',
+      'ακριβό (expensive)'
     ]
   },
   {
@@ -69,7 +69,7 @@ export const greekAlphabet = [
       'γράμμα (letter)',
       'γέφυρα (bridge)',
       'γυαλί (glass)',
-      'γιορτή (celebration)'
+      'γέρος (old man)'
     ]
   },
   {
@@ -90,8 +90,8 @@ export const greekAlphabet = [
       'δρόμος (road)',
       'δάσκαλος (teacher)',
       'δωμάτιο (room)',
-      'δεξιά (right)',
-      'δυο (two)',
+      'δάσος (forest)',
+      'δύναμη (power)',
       'δουλειά (work)'
     ]
   },

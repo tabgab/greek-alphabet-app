@@ -352,10 +352,10 @@ const PracticeSection = () => {
     // Generate question with better variety across all unlocked letters
     let newQuestion;
 
-    // For sound-identification, ensure variety by using different letters more frequently
+    // For sound-identification, ensure maximum variety by using different letters more frequently
     if (selectedExerciseType === 'sound-identification') {
-      // 40% chance to continue with same letter, 60% chance for new letter
-      if (currentTargetLetter && Math.random() > 0.6) {
+      // 20% chance to continue with same letter, 80% chance for new letter (maximum variety)
+      if (currentTargetLetter && Math.random() > 0.8) {
         newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
       } else {
         newQuestion = generateQuestion(selectedExerciseType);
