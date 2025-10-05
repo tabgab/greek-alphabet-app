@@ -32,6 +32,12 @@ const EXERCISE_TYPES = {
     description: 'Match letters to words containing their sounds',
     icon: '🌐',
     questionCount: 3
+  },
+  'sound-identification': {
+    name: 'Sound ID',
+    description: 'Listen and identify the Greek letter by its sound',
+    icon: '🎵',
+    questionCount: 3
   }
 };
 
@@ -47,6 +53,36 @@ const PracticeSection = () => {
   const [sessionLetters, setSessionLetters] = useState(new Map()); // Track letters practiced in this session
   const [questionHistory, setQuestionHistory] = useState(new Set()); // Track recent questions to avoid repetition
   const [currentTargetLetter, setCurrentTargetLetter] = useState(null); // Track which letter we're focusing on
+
+  // Function to play letter sound for listening exercises
+  const playLetterSound = (sound) => {
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(sound);
+
+      // Try to find a Greek voice for better pronunciation
+      const voices = window.speechSynthesis.getVoices();
+      const greekVoice = voices.find(voice =>
+        voice.lang.startsWith('el') ||
+        voice.lang.startsWith('grc') ||
+        voice.name.toLowerCase().includes('greek')
+      );
+
+      if (greekVoice) {
+        utterance.voice = greekVoice;
+        utterance.lang = greekVoice.lang;
+      } else {
+        utterance.lang = 'el-GR';
+      }
+
+      utterance.rate = 0.7; // Slower for clarity in listening exercises
+      utterance.pitch = 1.1; // Slightly higher pitch for clarity
+
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   // Generate focused questions about a specific letter with multiple variations
   const generateQuestion = (exerciseType, targetLetter = null) => {
@@ -198,6 +234,26 @@ const PracticeSection = () => {
         };
         break;
 
+      case 'sound-identification':
+        const soundIdentificationPatterns = [
+          `Listen to this sound and identify which letter makes it:`,
+          `Which Greek letter produces this sound when pronounced?`,
+          `What Greek letter should you use to make this sound?`,
+          `Listen carefully - which letter matches this pronunciation?`,
+          `Identify the Greek letter by its sound:`
+        ];
+        const randomSoundPattern = soundIdentificationPatterns[Math.floor(Math.random() * soundIdentificationPatterns.length)];
+
+        question = {
+          type: 'sound-identification',
+          question: randomSoundPattern,
+          correctAnswer: focusLetter.name,
+          options: [focusLetter, ...distractorLetters].map(l => l.name).sort(() => Math.random() - 0.5),
+          letter: focusLetter,
+          soundToPlay: focusLetter.englishSound
+        };
+        break;
+
       default:
         return generateQuestion('multiple-choice', focusLetter);
     }
@@ -215,6 +271,13 @@ const PracticeSection = () => {
     // Set the target letter for this exercise session
     if (firstQuestion.letter) {
       setCurrentTargetLetter(firstQuestion.letter);
+    }
+
+    // Auto-play sound for sound-identification exercises
+    if (exerciseType === 'sound-identification' && firstQuestion.soundToPlay) {
+      setTimeout(() => {
+        playLetterSound(firstQuestion.soundToPlay);
+      }, 500); // Small delay to let UI render first
     }
 
     setSelectedAnswer(null);
@@ -305,6 +368,13 @@ const PracticeSection = () => {
     setCurrentQuestion(newQuestion);
     setSelectedAnswer(null);
     setShowResult(false);
+
+    // Auto-play sound for sound-identification exercises
+    if (selectedExerciseType === 'sound-identification' && newQuestion.soundToPlay) {
+      setTimeout(() => {
+        playLetterSound(newQuestion.soundToPlay);
+      }, 300); // Small delay to let UI update first
+    }
   };
 
   const finishExercise = () => {
@@ -395,6 +465,21 @@ const PracticeSection = () => {
                   )}
                   {currentQuestion.type === 'letter-matching' && (
                     <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                  )}
+                  {currentQuestion.type === 'sound-identification' && (
+                    <div className="sound-identification-container">
+                      <div className="sound-prompt">
+                        <span className="sound-icon">🔊</span>
+                        <span className="sound-text">Listen to the sound</span>
+                      </div>
+                      <button
+                        className="replay-sound-btn"
+                        onClick={() => playLetterSound(currentQuestion.soundToPlay)}
+                        title="Replay the sound"
+                      >
+                        🔄 Replay Sound
+                      </button>
+                    </div>
                   )}
                 </div>
               )

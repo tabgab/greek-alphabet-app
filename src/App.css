@@ -453,6 +453,62 @@ button {
   opacity: 0.8;
 }
 
+/* Sound Identification Exercise Styles */
+.sound-identification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background-color: #f8fafc;
+  border-radius: 12px;
+  border: 2px solid #3b82f6;
+}
+
+.sound-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.sound-icon {
+  font-size: 1.5rem;
+  color: #3b82f6;
+}
+
+.sound-text {
+  color: #475569;
+}
+
+.replay-sound-btn {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.replay-sound-btn:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.4);
+}
+
+.replay-sound-btn:active {
+  transform: translateY(0);
+}
+
 .filter-buttons {
   display: flex;
   gap: 0.5rem;
