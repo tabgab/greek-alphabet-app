@@ -393,6 +393,66 @@ button {
   border: 1px solid #fecaca;
 }
 
+/* Enhanced Greek Words Section */
+.greek-word-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.greek-word-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.greek-word-text {
+  color: #dc2626;
+  font-weight: 500;
+  border: 1px solid #fecaca;
+  background-color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+}
+
+.pronunciation-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.pronunciation-btn:hover {
+  background-color: #2563eb;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+.pronunciation-btn:active {
+  transform: scale(0.95);
+}
+
+.greek-word-translation {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-style: italic;
+  margin-left: 0.5rem;
+  opacity: 0.8;
+}
+
 .filter-buttons {
   display: flex;
   gap: 0.5rem;

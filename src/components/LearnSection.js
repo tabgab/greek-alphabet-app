@@ -99,6 +99,38 @@ const LearnSection = () => {
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [filter, setFilter] = useState('available'); // 'all', 'available', 'locked', 'vowels', 'consonants'
 
+  // Function to pronounce Greek words using Web Speech API
+  const speakGreek = (text) => {
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Try to find a Greek voice
+      const voices = window.speechSynthesis.getVoices();
+      const greekVoice = voices.find(voice =>
+        voice.lang.startsWith('el') || // Modern Greek
+        voice.lang.startsWith('grc') || // Ancient Greek
+        voice.name.toLowerCase().includes('greek')
+      );
+
+      if (greekVoice) {
+        utterance.voice = greekVoice;
+        utterance.lang = greekVoice.lang;
+      } else {
+        // Fallback to English with Greek text
+        utterance.lang = 'el-GR';
+        utterance.rate = 0.8; // Slightly slower for clarity
+      }
+
+      // Speak the text
+      window.speechSynthesis.speak(utterance);
+    } else {
+      console.warn('Speech synthesis not supported in this browser');
+    }
+  };
+
   const getFilteredLetters = () => {
     switch (filter) {
       case 'available':
@@ -226,11 +258,37 @@ const LearnSection = () => {
         {letter.commonWords.length > 0 && (
           <div className="greek-words-section">
             <h4>🇬🇷 Greek Examples</h4>
-            <p className="greek-subtitle">Common Greek words using this letter:</p>
+            <p className="greek-subtitle">Common Greek words using this letter (click to hear pronunciation):</p>
             <div className="greek-words">
-              {letter.commonWords.map((word, index) => (
-                <span key={index} className="greek-word">{word}</span>
-              ))}
+              {letter.commonWords.map((wordWithTranslation, index) => {
+                // Split word and translation (format: "word (translation)")
+                const match = wordWithTranslation.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                  const greekWord = match[1].trim();
+                  const englishTranslation = match[2].trim();
+                  return (
+                    <div key={index} className="greek-word-item">
+                      <div className="greek-word-container">
+                        <span className="greek-word-text">{greekWord}</span>
+                        <button
+                          className="pronunciation-btn"
+                          onClick={() => speakGreek(greekWord)}
+                          aria-label={`Pronounce ${greekWord}`}
+                          title={`Hear pronunciation of ${greekWord}`}
+                        >
+                          🔊
+                        </button>
+                      </div>
+                      <span className="greek-word-translation">{englishTranslation}</span>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={index} className="greek-word-item">
+                    <span className="greek-word">{wordWithTranslation}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
