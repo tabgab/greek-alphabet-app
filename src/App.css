@@ -499,6 +499,24 @@ button {
   display: inline-block;
 }
 
+.word-with-translation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.word-translation {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-style: italic;
+  font-weight: 500;
+  background-color: #f8fafc;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
 .replay-sound-btn {
   background-color: #10b981;
   color: white;

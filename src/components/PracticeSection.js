@@ -253,8 +253,9 @@ const PracticeSection = () => {
           };
         } else {
           const randomWordWithTranslation = availableWords[Math.floor(Math.random() * availableWords.length)];
-          // Extract just the Greek word (before the parentheses)
+          // Extract Greek word and translation
           const greekWord = randomWordWithTranslation.split('(')[0].trim();
+          const englishTranslation = randomWordWithTranslation.split('(')[1].replace(')', '').trim();
 
           const wordIdentificationPatterns = [
             `Listen to this Greek word and identify which letter it starts with:`,
@@ -273,6 +274,7 @@ const PracticeSection = () => {
             letter: focusLetter,
             soundToPlay: greekWord,
             wordToShow: greekWord,
+            translationToShow: englishTranslation,
             isWordBased: true
           };
         }
@@ -347,16 +349,29 @@ const PracticeSection = () => {
 
     setQuestionNumber(prev => prev + 1);
 
-    // Generate question focused on the same target letter (or choose new one occasionally)
+    // Generate question with better variety across all unlocked letters
     let newQuestion;
 
-    if (currentTargetLetter && Math.random() > 0.3) { // 70% chance to continue with same letter
-      newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
+    // For sound-identification, ensure variety by using different letters more frequently
+    if (selectedExerciseType === 'sound-identification') {
+      // 40% chance to continue with same letter, 60% chance for new letter
+      if (currentTargetLetter && Math.random() > 0.6) {
+        newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
+      } else {
+        newQuestion = generateQuestion(selectedExerciseType);
+        if (newQuestion.letter) {
+          setCurrentTargetLetter(newQuestion.letter);
+        }
+      }
     } else {
-      // 30% chance to choose a new letter for variety
-      newQuestion = generateQuestion(selectedExerciseType);
-      if (newQuestion.letter) {
-        setCurrentTargetLetter(newQuestion.letter);
+      // For other exercises, keep the original balance
+      if (currentTargetLetter && Math.random() > 0.3) {
+        newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
+      } else {
+        newQuestion = generateQuestion(selectedExerciseType);
+        if (newQuestion.letter) {
+          setCurrentTargetLetter(newQuestion.letter);
+        }
       }
     }
 
@@ -503,7 +518,12 @@ const PracticeSection = () => {
                       </div>
                       {currentQuestion.isWordBased && currentQuestion.wordToShow && (
                         <div className="word-display">
-                          <span className="greek-word-large">{currentQuestion.wordToShow}</span>
+                          <div className="word-with-translation">
+                            <span className="greek-word-large">{currentQuestion.wordToShow}</span>
+                            {currentQuestion.translationToShow && (
+                              <span className="word-translation">"{currentQuestion.translationToShow}"</span>
+                            )}
+                          </div>
                         </div>
                       )}
                       <button
