@@ -273,22 +273,31 @@ const PracticeSection = () => {
       }
     }
 
-    // If we keep getting the same question pattern, force variety
+    // Prevent question repetition with stricter rules
     let attempts = 0;
-    const maxAttempts = 5;
-    while (questionHistory.has(newQuestion.question) && attempts < maxAttempts) {
+    const maxAttempts = 10;
+    const recentQuestions = Array.from(questionHistory);
+
+    // Ensure at least 2 questions gap before same question can repeat
+    while (
+      (questionHistory.has(newQuestion.question) ||
+       (recentQuestions.length >= 2 && recentQuestions.slice(-2).includes(newQuestion.question)) ||
+       (recentQuestions.length >= 1 && recentQuestions.slice(-1)[0] === newQuestion.question))
+      && attempts < maxAttempts
+    ) {
       newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
       attempts++;
     }
 
-    // Update question history (keep last 15 questions)
+    // Update question history (keep last 20 questions for better variety)
     setQuestionHistory(prev => {
       const newHistory = new Set(prev);
       newHistory.add(newQuestion.question);
-      if (newHistory.size > 15) {
+      if (newHistory.size > 20) {
         const items = Array.from(newHistory);
-        items.slice(-10).forEach(item => newHistory.add(item));
-        items.slice(0, -10).forEach(item => newHistory.delete(item));
+        // Keep the 15 most recent questions
+        const recentItems = items.slice(-15);
+        return new Set(recentItems);
       }
       return newHistory;
     });
