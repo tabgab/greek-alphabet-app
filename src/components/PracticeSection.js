@@ -53,6 +53,7 @@ const PracticeSection = () => {
   const [sessionLetters, setSessionLetters] = useState(new Map()); // Track letters practiced in this session
   const [questionHistory, setQuestionHistory] = useState(new Set()); // Track recent questions to avoid repetition
   const [currentTargetLetter, setCurrentTargetLetter] = useState(null); // Track which letter we're focusing on
+  const [showSoundIdWord, setShowSoundIdWord] = useState(false); // Track if Sound ID word is visible
 
   // Function to play letter sound for listening exercises
   const playLetterSound = (sound) => {
@@ -397,6 +398,7 @@ const PracticeSection = () => {
     setCurrentQuestion(newQuestion);
     setSelectedAnswer(null);
     setShowResult(false);
+    setShowSoundIdWord(false); // Reset word visibility for new question
 
     // Auto-play sound for sound-identification exercises
     if (selectedExerciseType === 'sound-identification' && newQuestion.soundToPlay) {
@@ -542,12 +544,21 @@ const PracticeSection = () => {
                       </div>
                       {currentQuestion.isWordBased && currentQuestion.wordToShow && (
                         <div className="word-display">
-                          <div className="word-with-translation">
-                            <span className="greek-word-large">{currentQuestion.wordToShow}</span>
-                            {currentQuestion.translationToShow && (
-                              <span className="word-translation">"{currentQuestion.translationToShow}"</span>
-                            )}
-                          </div>
+                          {showSoundIdWord ? (
+                            <div className="word-with-translation">
+                              <span className="greek-word-large">{currentQuestion.wordToShow}</span>
+                              {currentQuestion.translationToShow && (
+                                <span className="word-translation">"{currentQuestion.translationToShow}"</span>
+                              )}
+                            </div>
+                          ) : (
+                            <button
+                              className="reveal-word-btn"
+                              onClick={() => setShowSoundIdWord(true)}
+                            >
+                              💡 Click to reveal the word
+                            </button>
+                          )}
                         </div>
                       )}
                       <button
