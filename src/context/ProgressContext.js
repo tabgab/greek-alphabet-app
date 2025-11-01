@@ -24,6 +24,9 @@ export const ProgressProvider = ({ children }) => {
       lastPracticeDate: null,
       achievements: [],
       unlockedLetters: [1, 2, 3, 4, 5], // Start with first 5 letters (Alpha, Beta, Gamma, Delta, Epsilon)
+      phraseScores: {},
+      completedPhrases: [],
+      unlockedPhrases: [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 33, 34, 46, 47, 50], // Start with basic phrases
       exerciseStats: {
         totalQuestions: 0,
         correctAnswers: 0,
@@ -301,6 +304,41 @@ export const ProgressProvider = ({ children }) => {
     return userProgress.exerciseStats;
   };
 
+  // Phrase-related functions
+  const isPhraseUnlocked = (phraseId) => {
+    return userProgress.unlockedPhrases && userProgress.unlockedPhrases.includes(phraseId);
+  };
+
+  const isPhraseCompleted = (phraseId) => {
+    return userProgress.completedPhrases && userProgress.completedPhrases.includes(phraseId);
+  };
+
+  const getBestPhraseScore = (phraseId) => {
+    return userProgress.phraseScores ? (userProgress.phraseScores[phraseId] || 0) : 0;
+  };
+
+  const updatePhraseScore = (phraseId, score) => {
+    setUserProgress(prev => {
+      const newPhraseScores = {
+        ...(prev.phraseScores || {}),
+        [phraseId]: Math.max(prev.phraseScores?.[phraseId] || 0, score)
+      };
+
+      // Mark phrase as completed if score is high enough (>= 80%)
+      const shouldMarkCompleted = score >= 80 && !(prev.completedPhrases || []).includes(phraseId);
+      const newCompletedPhrases = shouldMarkCompleted
+        ? [...new Set([...(prev.completedPhrases || []), phraseId])]
+        : (prev.completedPhrases || []);
+
+      return {
+        ...prev,
+        phraseScores: newPhraseScores,
+        completedPhrases: newCompletedPhrases,
+        lastPracticeDate: new Date().toISOString()
+      };
+    });
+  };
+
   // Get detailed progress metrics
   const getProgressMetrics = () => {
     const totalLetters = 24;
@@ -334,6 +372,9 @@ export const ProgressProvider = ({ children }) => {
       lastPracticeDate: null,
       achievements: [],
       unlockedLetters: [1, 2, 3, 4, 5], // Start with first 5 letters (Alpha, Beta, Gamma, Delta, Epsilon)
+      phraseScores: {},
+      completedPhrases: [],
+      unlockedPhrases: [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 33, 34, 46, 47, 50], // Start with basic phrases
       exerciseStats: {
         totalQuestions: 0,
         correctAnswers: 0,
@@ -376,7 +417,12 @@ export const ProgressProvider = ({ children }) => {
     getExerciseStats,
     getProgressMetrics,
     resetAllProgress,
-    ACHIEVEMENTS
+    ACHIEVEMENTS,
+    // Phrase functions
+    isPhraseUnlocked,
+    isPhraseCompleted,
+    getBestPhraseScore,
+    updatePhraseScore
   };
 
   return (

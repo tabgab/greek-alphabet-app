@@ -1,70 +1,174 @@
-# Getting Started with Create React App
+# Greek Alphabet Learning App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive web application for learning the Greek alphabet and essential Greek phrases.
+
+## Features
+
+### 📚 Greek Alphabet Learning
+- **24 Greek Letters**: Learn all letters of the Greek alphabet
+- **Uppercase & Lowercase**: Display and practice both forms of each letter
+- **Interactive Learning**: Click on any letter to see detailed information
+- **Audio Pronunciation**: Listen to native pronunciation using Web Speech API
+- **Visual Aids**: Pictograms and memory helpers for each letter
+- **Progress Tracking**: Track your learning progress for each letter
+- **Gamification**: Unlock letters progressively as you learn
+
+### 🗣️ Greek Phrases (100 Essential Phrases)
+- **6 Categories**: Greetings, Dining, Directions, Shopping, Emergencies, Social
+- **Progressive Learning**: Phrases unlock as you advance through difficulty levels
+- **Audio Support**: Listen to native Greek pronunciation
+- **Contextual Examples**: See how phrases are used in real situations
+- **Interactive Practice**: 4 different exercise types to test your knowledge
+
+### 🎯 Practice Modes
+
+#### Alphabet Practice
+- **Uppercase/Lowercase Recognition**: Test both letter forms
+- **Sound Matching**: Match letters with their pronunciations
+- **Name Recognition**: Identify letters by their Greek names
+
+#### Phrase Practice
+- **English to Greek**: Translate English phrases to Greek
+- **Greek to English**: Understand Greek phrases in English
+- **Pronunciation Matching**: Listen and identify correct pronunciations
+- **Context Practice**: Choose appropriate phrases for different situations
+
+### 📊 Progress Tracking
+- Detailed statistics for alphabet learning
+- Category-based phrase progress tracking
+- Visual progress indicators
+- Best scores and completion rates
+
+## Getting Started
+
+### Prerequisites
+- Node.js (version 14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd greek-alphabet-app
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Runs the app in development mode. The page will reload when you make changes.
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
+Builds the app for production to the `build` folder.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features in Detail
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Greek Alphabet Section
+- Learn all 24 Greek letters (Α to Ω)
+- See both uppercase and lowercase forms
+- Hear correct pronunciation
+- Learn Greek letter names
+- Understand letter usage and examples
+- Visual memory aids with pictograms
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Greek Phrases Section
+- 100 carefully selected essential phrases
+- Organized by practical categories:
+  - 🙋 Greetings (15 phrases)
+  - 🍽️ Dining (15 phrases)
+  - 🗺️ Directions (15 phrases)
+  - 🛍️ Shopping (15 phrases)
+  - 🚨 Emergencies (15 phrases)
+  - 👥 Social (25 phrases)
+- 3 difficulty levels
+- Native audio pronunciation
+- Real-world usage examples
 
-### `npm run eject`
+### Practice Exercises
+Interactive quizzes to reinforce learning:
+- Multiple choice questions
+- Audio-based pronunciation tests
+- Context-based phrase selection
+- Immediate feedback with explanations
+- Score tracking and progress monitoring
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Technology Stack
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **React 18**: Modern React with hooks
+- **React Router**: Navigation between sections
+- **Context API**: State management for progress tracking
+- **Local Storage**: Persistent progress saving
+- **Web Speech API**: Native Greek pronunciation
+- **Responsive Design**: Works on desktop and mobile devices
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Browser Compatibility
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Chrome/Edge (recommended for best audio support)
+- Firefox
+- Safari
+- Opera
 
-## Learn More
+**Note**: Audio pronunciation works best in Chrome/Edge with Greek language support.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Docker Deployment
 
-### Code Splitting
+The app includes Docker configuration for easy deployment:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+# Build the Docker image
+docker build -t greek-alphabet-app .
 
-### Analyzing the Bundle Size
+# Run the container
+docker run -p 80:80 greek-alphabet-app
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Manual Deployment
 
-### Making a Progressive Web App
+1. Build the production version:
+```bash
+npm run build
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2. Deploy the `build` folder to your hosting service
 
-### Advanced Configuration
+See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
+This project is open source and available under the MIT License.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Acknowledgments
+
+- Greek language content curated for practical learning
+- Icons and visual aids designed for effective memorization
+- Audio pronunciation powered by Web Speech API
+- Built with Create React App
+
+## Support
+
+For issues, questions, or suggestions, please open an issue on GitHub.
+
+---
+
+**Happy Learning! Καλή μάθηση! (Kalí máthisi!)**

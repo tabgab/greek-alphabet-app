@@ -500,10 +500,41 @@ const PracticeSection = () => {
               currentQuestion.letter && (
                 <div className="question-letter">
                   {currentQuestion.type === 'letter-to-sound' && (
-                    <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                    <div className="letter-display-container">
+                      <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                      <span className="case-indicator">({currentQuestion.letter.name})</span>
+                    </div>
                   )}
                   {currentQuestion.type === 'letter-matching' && (
-                    <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                    <div className="letter-display-container">
+                      <span className="greek-letter-large">
+                        {currentQuestion.direction === 'up-to-low' ? currentQuestion.letter.greekLetter : currentQuestion.letter.greekLowercase}
+                      </span>
+                      <span className="case-indicator">
+                        ({currentQuestion.direction === 'up-to-low' ? 'Uppercase' : 'Lowercase'} {currentQuestion.letter.name})
+                      </span>
+                    </div>
+                  )}
+                  {currentQuestion.type === 'case-recognition' && (
+                    <div className="letter-display-container">
+                      {currentQuestion.subType === 'identify-case' && (
+                        <span className="greek-letter-large">
+                          {currentQuestion.correctAnswer === 'uppercase' ? currentQuestion.letter.greekLetter : currentQuestion.letter.greekLowercase}
+                        </span>
+                      )}
+                      {(currentQuestion.subType === 'find-uppercase' || currentQuestion.subType === 'find-lowercase') && (
+                        <div className="both-cases-question">
+                          <span className="greek-letter-medium">{currentQuestion.letter.greekLetter}</span>
+                          <span className="case-separator">↔</span>
+                          <span className="greek-letter-medium">{currentQuestion.letter.greekLowercase}</span>
+                        </div>
+                      )}
+                      {currentQuestion.subType === 'same-letter-different-case' && (
+                        <span className="greek-letter-large">
+                          {currentQuestion.question.includes('lowercase') ? currentQuestion.letter.greekLetter : currentQuestion.letter.greekLowercase}
+                        </span>
+                      )}
+                    </div>
                   )}
                   {currentQuestion.type === 'sound-identification' && (
                     <div className="sound-identification-container">

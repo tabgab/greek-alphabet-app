@@ -4,6 +4,8 @@ const Navigation = ({ currentSection, setCurrentSection }) => {
   const navItems = [
     { id: 'learn', label: 'Learn', icon: '📚' },
     { id: 'practice', label: 'Practice', icon: '🎯' },
+    { id: 'phrases', label: 'Phrases', icon: '💬' },
+    { id: 'phrases-practice', label: 'Phrase Practice', icon: '🗣️' },
     { id: 'progress', label: 'Progress', icon: '📊' },
     { id: 'cheatsheet', label: 'Cheat Sheet', icon: '📋' }
   ];

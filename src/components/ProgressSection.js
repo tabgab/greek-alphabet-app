@@ -1,5 +1,6 @@
 import React from 'react';
 import { useProgress } from '../context/ProgressContext';
+import { greekPhrases, phraseCategories } from '../greekPhrasesData';
 
 const ProgressSection = () => {
   const {
@@ -11,7 +12,10 @@ const ProgressSection = () => {
     getAvailableLetters,
     isLetterCompleted,
     getBestScore,
-    resetAllProgress
+    resetAllProgress,
+    isPhraseCompleted,
+    getBestPhraseScore,
+    isPhraseUnlocked
   } = useProgress();
 
   // Generate exercise recommendations based on progress
@@ -70,6 +74,45 @@ const ProgressSection = () => {
   const lockedAchievements = getLockedAchievements();
   const stats = getExerciseStats();
 
+  // Calculate phrase statistics - EXTENDING functionality, not replacing
+  const getPhraseMetrics = () => {
+    const completedPhrases = greekPhrases.filter(phrase => isPhraseCompleted(phrase.id)).length;
+    const unlockedPhrases = greekPhrases.filter(phrase => isPhraseUnlocked(phrase.id)).length;
+    const totalPhrases = greekPhrases.length;
+    const completionPercentage = Math.round((completedPhrases / totalPhrases) * 100);
+
+    // Calculate average phrase score
+    const completedPhrasesData = greekPhrases.filter(phrase => isPhraseCompleted(phrase.id));
+    const averagePhraseScore = completedPhrasesData.length > 0 
+      ? Math.round(completedPhrasesData.reduce((sum, phrase) => sum + getBestPhraseScore(phrase.id), 0) / completedPhrasesData.length)
+      : 0;
+
+    // Calculate category progress
+    const categoryProgress = Object.entries(phraseCategories).map(([key, category]) => {
+      const categoryPhrases = greekPhrases.filter(phrase => phrase.category === key);
+      const completedInCategory = categoryPhrases.filter(phrase => isPhraseCompleted(phrase.id)).length;
+      return {
+        category: key,
+        name: category.name,
+        icon: category.icon,
+        completed: completedInCategory,
+        total: categoryPhrases.length,
+        percentage: Math.round((completedInCategory / categoryPhrases.length) * 100)
+      };
+    });
+
+    return {
+      completedPhrases,
+      unlockedPhrases,
+      totalPhrases,
+      completionPercentage,
+      averagePhraseScore,
+      categoryProgress
+    };
+  };
+
+  const phraseMetrics = getPhraseMetrics();
+
   return (
     <div className="progress-section">
       <div className="section-header">
@@ -101,10 +144,10 @@ const ProgressSection = () => {
         </div>
 
         <div className="stat-card secondary">
-          <div className="stat-icon">⭐</div>
+          <div className="stat-icon">💬</div>
           <div className="stat-content">
-            <h3>{progress.totalScore.toLocaleString()}</h3>
-            <p>Total Points</p>
+            <h3>{phraseMetrics.completedPhrases}/100</h3>
+            <p>Phrases Learned</p>
           </div>
         </div>
 
@@ -120,7 +163,15 @@ const ProgressSection = () => {
           <div className="stat-icon">📊</div>
           <div className="stat-content">
             <h3>{progress.averageScore}%</h3>
-            <p>Average Score</p>
+            <p>Alphabet Score</p>
+          </div>
+        </div>
+
+        <div className="stat-card primary">
+          <div className="stat-icon">⭐</div>
+          <div className="stat-content">
+            <h3>{progress.totalScore.toLocaleString()}</h3>
+            <p>Total Points</p>
           </div>
         </div>
       </div>
@@ -171,6 +222,39 @@ const ProgressSection = () => {
               </svg>
               <span className="progress-percentage">
                 {progress.completionProgress}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="progress-chart">
+          <h3>Phrases Progress</h3>
+          <div className="chart-container">
+            <div className="progress-circle">
+              <svg viewBox="0 0 100 100" className="circular-progress">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="#e2e8f0"
+                  strokeWidth="8"
+                />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="#10b981"
+                  strokeWidth="8"
+                  strokeDasharray={`${2 * Math.PI * 45}`}
+                  strokeDashoffset={`${2 * Math.PI * 45 * (1 - phraseMetrics.completionPercentage / 100)}`}
+                  transform="rotate(-90 50 50)"
+                  className="progress-ring"
+                />
+              </svg>
+              <span className="progress-percentage">
+                {phraseMetrics.completionPercentage}%
               </span>
             </div>
           </div>
@@ -252,6 +336,32 @@ const ProgressSection = () => {
                   })}
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="phrase-categories-progress">
+          <h3>📝 Phrase Categories Progress</h3>
+          <div className="categories-grid">
+            {phraseMetrics.categoryProgress.map(category => (
+              <div key={category.category} className="category-progress-card">
+                <div className="category-header">
+                  <span className="category-icon">{category.icon}</span>
+                  <span className="category-name">{category.name}</span>
+                </div>
+                <div className="category-stats">
+                  <div className="category-progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${category.percentage}%` }}
+                    />
+                  </div>
+                  <div className="category-numbers">
+                    <span>{category.completed}/{category.total}</span>
+                    <span className="percentage">{category.percentage}%</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

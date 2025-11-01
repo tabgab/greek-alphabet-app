@@ -171,7 +171,14 @@ const LearnSection = () => {
       >
         <div className="letter-display">
           <div className="letter-main">
-            <span className={`greek-letter ${unlocked ? '' : 'locked'}`}>{letter.greekLetter}</span>
+            <div className="letter-cases">
+              <span className={`greek-letter uppercase ${unlocked ? '' : 'locked'}`} title="Uppercase">
+                {letter.greekLetter}
+              </span>
+              <span className={`greek-letter lowercase ${unlocked ? '' : 'locked'}`} title="Lowercase">
+                {letter.greekLowercase}
+              </span>
+            </div>
             <span className="letter-name">{letter.name}</span>
             {!unlocked && <span className="lock-icon">🔒</span>}
           </div>
@@ -213,7 +220,17 @@ const LearnSection = () => {
     <div className="letter-detail">
       <div className="detail-header">
         <div className="letter-visualization">
-          <span className="detail-greek">{letter.greekLetter}</span>
+          <div className="both-cases-display">
+            <div className="case-item">
+              <span className="detail-greek uppercase">{letter.greekLetter}</span>
+              <label className="case-label">Uppercase</label>
+            </div>
+            <div className="case-separator">↔</div>
+            <div className="case-item">
+              <span className="detail-greek lowercase">{letter.greekLowercase}</span>
+              <label className="case-label">Lowercase</label>
+            </div>
+          </div>
           <div className="pictogram-large">{getPictogram(letter.pictogram)}</div>
         </div>
         <div className="detail-info">
@@ -242,6 +259,19 @@ const LearnSection = () => {
           <div className="visual-example">
             <span className="visual-prompt">Think of it as:</span>
             <span className="visual-description">{getVisualDescription(letter)}</span>
+          </div>
+          <div className="case-comparison">
+            <h5>Letter Forms Comparison</h5>
+            <div className="case-comparison-display">
+              <div className="case-comparison-item">
+                <span className="comparison-letter">{letter.greekLetter}</span>
+                <span className="comparison-description">Uppercase - used at beginning of sentences and proper nouns</span>
+              </div>
+              <div className="case-comparison-item">
+                <span className="comparison-letter">{letter.greekLowercase}</span>
+                <span className="comparison-description">Lowercase - used in regular text and words</span>
+              </div>
+            </div>
           </div>
         </div>
 
