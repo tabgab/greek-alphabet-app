@@ -472,23 +472,59 @@ const PhrasesPracticeSection = () => {
                 marginTop: '15px'
               }}>
                 {currentQuestion.options.map((option, index) => (
-                  <button
-                    key={index}
-                    className={`practice-btn ${getOptionButtonClass(option)}`}
-                    onClick={() => setSelectedAnswer(option)}
-                    disabled={showResult}
-                    style={{
-                      width: '100%',
-                      padding: '15px',
-                      textAlign: 'left',
-                      minHeight: '50px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-start'
-                    }}
-                  >
-                    <span className="option-text">{option}</span>
-                  </button>
+                  <div key={index} style={{ display: 'flex', gap: '10px', alignItems: 'stretch' }}>
+                    <button
+                      className={`practice-btn ${getOptionButtonClass(option)}`}
+                      onClick={() => setSelectedAnswer(option)}
+                      disabled={showResult}
+                      style={{
+                        flex: 1,
+                        padding: '15px',
+                        textAlign: 'left',
+                        minHeight: '50px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start'
+                      }}
+                    >
+                      <span className="option-text">{option}</span>
+                    </button>
+                    {(currentQuestion.type === 'translation-to-greek' || currentQuestion.type === 'conversation-context') && (
+                      <button
+                        className="pronunciation-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          speakGreek(option);
+                        }}
+                        title="Listen to pronunciation"
+                        style={{
+                          minWidth: '50px',
+                          padding: '10px',
+                          backgroundColor: '#3b82f6',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          fontSize: '1.2rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          transition: 'all 0.2s ease',
+                          boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#2563eb';
+                          e.currentTarget.style.transform = 'scale(1.05)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = '#3b82f6';
+                          e.currentTarget.style.transform = 'scale(1)';
+                        }}
+                      >
+                        🔊
+                      </button>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
