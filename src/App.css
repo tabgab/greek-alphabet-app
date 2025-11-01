@@ -159,28 +159,118 @@ body {
   line-height: 1.6;
 }
 
+/* Hamburger Menu Button */
+.hamburger-btn {
+  display: none; /* Hidden on desktop */
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hamburger-btn:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+.hamburger-btn:active {
+  transform: scale(0.95);
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 24px;
+  height: 18px;
+}
+
+.hamburger-icon .bar {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Overlay backdrop */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-container {
     flex-direction: column;
   }
 
+  /* Show hamburger button on mobile */
+  .hamburger-btn {
+    display: block;
+  }
+
+  /* Show overlay when menu is open */
+  .nav-overlay {
+    display: block;
+  }
+
+  /* Mobile navigation - hidden by default, slides in from left */
   .app-navigation {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e2e8f0;
+    position: fixed;
+    top: 0;
+    left: -280px; /* Hidden off-screen */
+    width: 280px;
+    height: 100vh;
+    background-color: white;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: none;
+    z-index: 1000;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Menu open state */
+  .app-navigation.menu-open {
+    left: 0;
   }
 
   .nav-container {
     display: flex;
-    overflow-x: auto;
+    flex-direction: column;
     gap: 0.5rem;
     padding: 1rem;
+    padding-top: 4rem; /* Space for hamburger button */
   }
 
   .nav-item {
     flex-shrink: 0;
-    min-width: 120px;
+    min-width: auto;
+    width: 100%;
   }
 
   .header-content {
@@ -191,6 +281,7 @@ body {
 
   .main-content {
     padding: 1rem;
+    padding-top: 4rem; /* Space for hamburger button */
   }
 }
 
