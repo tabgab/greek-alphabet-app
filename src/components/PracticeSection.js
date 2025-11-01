@@ -349,45 +349,35 @@ const PracticeSection = () => {
 
     setQuestionNumber(prev => prev + 1);
 
-    // Generate question with better variety across all unlocked letters
+    // Generate question with maximum variety across all unlocked letters
     let newQuestion;
 
-    // For sound-identification, ensure maximum variety by using different letters more frequently
-    if (selectedExerciseType === 'sound-identification') {
-      // 20% chance to continue with same letter, 80% chance for new letter (maximum variety)
-      if (currentTargetLetter && Math.random() > 0.8) {
-        newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
-      } else {
-        newQuestion = generateQuestion(selectedExerciseType);
-        if (newQuestion.letter) {
-          setCurrentTargetLetter(newQuestion.letter);
-        }
-      }
+    // For ALL exercises, ensure maximum variety by using different letters more frequently
+    // Only 20% chance to continue with same letter, 80% chance for new letter
+    if (currentTargetLetter && Math.random() > 0.8) {
+      newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
     } else {
-      // For other exercises, keep the original balance
-      if (currentTargetLetter && Math.random() > 0.3) {
-        newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
-      } else {
-        newQuestion = generateQuestion(selectedExerciseType);
-        if (newQuestion.letter) {
-          setCurrentTargetLetter(newQuestion.letter);
-        }
+      // Choose a completely new letter (not the current target)
+      newQuestion = generateQuestion(selectedExerciseType);
+      if (newQuestion.letter) {
+        setCurrentTargetLetter(newQuestion.letter);
       }
     }
 
-    // Prevent question repetition with stricter rules
+    // Prevent question and LETTER repetition with stricter rules
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = 15;
     const recentQuestions = Array.from(questionHistory);
 
-    // Ensure at least 2 questions gap before same question can repeat
+    // Ensure variety: no same letter in consecutive questions, and avoid recent question text
     while (
       (questionHistory.has(newQuestion.question) ||
+       (newQuestion.letter && currentTargetLetter && newQuestion.letter.id === currentTargetLetter.id && attempts < 3) ||
        (recentQuestions.length >= 2 && recentQuestions.slice(-2).includes(newQuestion.question)) ||
        (recentQuestions.length >= 1 && recentQuestions.slice(-1)[0] === newQuestion.question))
       && attempts < maxAttempts
     ) {
-      newQuestion = generateQuestion(selectedExerciseType, currentTargetLetter);
+      newQuestion = generateQuestion(selectedExerciseType, null); // Force new letter selection
       attempts++;
     }
 
