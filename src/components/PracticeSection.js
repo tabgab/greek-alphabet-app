@@ -180,8 +180,8 @@ const PracticeSection = () => {
         question = {
           type: 'sound-to-letter',
           question: randomReversePattern,
-          correctAnswer: focusLetter.greekLetter,
-          options: [focusLetter, ...distractorLetters].map(l => l.greekLetter).sort(() => Math.random() - 0.5),
+          correctAnswer: `${focusLetter.greekLetter} ${focusLetter.greekLowercase}`,
+          options: [focusLetter, ...distractorLetters].map(l => `${l.greekLetter} ${l.greekLowercase}`).sort(() => Math.random() - 0.5),
           letter: focusLetter
         };
         break;
