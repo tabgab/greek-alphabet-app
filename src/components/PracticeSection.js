@@ -216,13 +216,10 @@ const PracticeSection = () => {
 
         const associationQuestionPatterns = [
           `Which letter makes the "${focusLetter.englishSound}" sound found in "${displayWord}"?`,
-          `What letter would you use to start writing "${displayWord}" in Greek?`,
-          `Which Greek letter sounds like the beginning of "${displayWord}"?`,
-          `If "${displayWord}" starts with the "${focusLetter.englishSound}" sound, which letter is it?`,
-          `Which letter represents the sound at the start of "${displayWord}"?`,
-          `The word "${displayWord}" begins with the "${focusLetter.englishSound}" sound. Which Greek letter matches that?`,
-          `To write "${displayWord}" in Greek, you'd start with which letter for the "${focusLetter.englishSound}" sound?`,
-          `Which Greek letter would you use for the initial sound in "${displayWord}"?`
+          `In the word "${displayWord}", which Greek letter represents the "${focusLetter.englishSound}" sound?`,
+          `The word "${displayWord}" contains the "${focusLetter.englishSound}" sound. Which Greek letter is that?`,
+          `Which Greek letter's sound can you hear in "${displayWord}"?`,
+          `Listen to "${displayWord}" - which Greek letter makes the "${focusLetter.englishSound}" sound you hear?`
         ];
         const randomAssociationQuestionPattern = associationQuestionPatterns[Math.floor(Math.random() * associationQuestionPatterns.length)];
 
