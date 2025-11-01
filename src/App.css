@@ -2617,3 +2617,44 @@ button:focus-visible,
 .option-btn:active:not(:disabled) {
   transform: scale(0.98);
 }
+
+/* Practice Button Styles for Phrase Practice */
+.practice-btn {
+  background-color: white;
+  border: 2px solid #e2e8f0;
+  color: #374151;
+  transition: all 0.2s ease;
+}
+
+.practice-btn:hover:not(:disabled):not(.selected):not(.correct):not(.incorrect) {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.practice-btn.selected {
+  background-color: #dbeafe !important;
+  border-color: #3b82f6 !important;
+  color: #1e40af !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+  transform: scale(1.02);
+}
+
+.practice-btn.correct {
+  background-color: #dcfce7 !important;
+  border-color: #16a34a !important;
+  color: #166534 !important;
+  font-weight: 600 !important;
+}
+
+.practice-btn.incorrect {
+  background-color: #fef2f2 !important;
+  border-color: #dc2626 !important;
+  color: #991b1b !important;
+  font-weight: 600 !important;
+}
+
+.practice-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.9;
+}
