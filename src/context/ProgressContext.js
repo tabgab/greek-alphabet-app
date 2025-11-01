@@ -15,7 +15,7 @@ export const ProgressProvider = ({ children }) => {
   // Initialize state from localStorage or defaults
   const [userProgress, setUserProgress] = useState(() => {
     const saved = localStorage.getItem('greek-alphabet-progress');
-    return saved ? JSON.parse(saved) : {
+    const defaultProgress = {
       completedLetters: [],
       scores: {},
       currentLevel: 1,
@@ -44,6 +44,43 @@ export const ProgressProvider = ({ children }) => {
         monthlyGoal: false
       }
     };
+
+    if (saved) {
+      const loadedProgress = JSON.parse(saved);
+      // Ensure at least 5 letters are unlocked for users with existing data
+      if (!loadedProgress.unlockedLetters || loadedProgress.unlockedLetters.length < 5) {
+        loadedProgress.unlockedLetters = [1, 2, 3, 4, 5];
+      }
+      // Ensure exerciseStats exists with all required fields
+      if (!loadedProgress.exerciseStats) {
+        loadedProgress.exerciseStats = defaultProgress.exerciseStats;
+      } else {
+        // Ensure all exerciseStats fields exist
+        loadedProgress.exerciseStats = {
+          ...defaultProgress.exerciseStats,
+          ...loadedProgress.exerciseStats
+        };
+      }
+      // Ensure milestones exists
+      if (!loadedProgress.milestones) {
+        loadedProgress.milestones = defaultProgress.milestones;
+      }
+      // Ensure unlockedPhrases exists
+      if (!loadedProgress.unlockedPhrases) {
+        loadedProgress.unlockedPhrases = defaultProgress.unlockedPhrases;
+      }
+      // Ensure phraseScores exists
+      if (!loadedProgress.phraseScores) {
+        loadedProgress.phraseScores = {};
+      }
+      // Ensure completedPhrases exists
+      if (!loadedProgress.completedPhrases) {
+        loadedProgress.completedPhrases = [];
+      }
+      return loadedProgress;
+    }
+    
+    return defaultProgress;
   });
 
   // Save progress to localStorage whenever it changes
