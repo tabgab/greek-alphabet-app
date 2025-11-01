@@ -240,7 +240,7 @@ export const ProgressProvider = ({ children }) => {
 
   // Check if letter is unlocked
   const isLetterUnlocked = (letterId) => {
-    return userProgress.unlockedLetters.includes(letterId);
+    return userProgress.unlockedLetters && userProgress.unlockedLetters.includes(letterId);
   };
 
   // Get next letters to unlock based on performance
@@ -279,12 +279,12 @@ export const ProgressProvider = ({ children }) => {
 
   // Get locked letters count
   const getLockedLettersCount = () => {
-    return 24 - userProgress.unlockedLetters.length;
+    return 24 - (userProgress.unlockedLetters ? userProgress.unlockedLetters.length : 0);
   };
 
   // Calculate overall progress percentage
   const getOverallProgress = () => {
-    const unlockedCount = userProgress.unlockedLetters.length;
+    const unlockedCount = userProgress.unlockedLetters ? userProgress.unlockedLetters.length : 0;
     return Math.round((unlockedCount / 24) * 100);
   };
 
@@ -342,9 +342,9 @@ export const ProgressProvider = ({ children }) => {
   // Get detailed progress metrics
   const getProgressMetrics = () => {
     const totalLetters = 24;
-    const unlockedLetters = userProgress.unlockedLetters.length;
-    const completedLetters = userProgress.completedLetters.length;
-    const totalScore = userProgress.totalScore;
+    const unlockedLetters = userProgress.unlockedLetters ? userProgress.unlockedLetters.length : 0;
+    const completedLetters = userProgress.completedLetters ? userProgress.completedLetters.length : 0;
+    const totalScore = userProgress.totalScore || 0;
     const averageScore = getAverageScore();
 
     return {
@@ -356,7 +356,7 @@ export const ProgressProvider = ({ children }) => {
       unlockProgress: Math.round((unlockedLetters / totalLetters) * 100),
       completionProgress: Math.round((completedLetters / totalLetters) * 100),
       currentLevel: Math.max(...greekAlphabet
-        .filter(letter => userProgress.unlockedLetters.includes(letter.id))
+        .filter(letter => userProgress.unlockedLetters && userProgress.unlockedLetters.includes(letter.id))
         .map(letter => letter.difficulty), 1)
     };
   };
