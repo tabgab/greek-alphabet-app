@@ -501,7 +501,10 @@ const PracticeSection = () => {
                 <div className="question-letter">
                   {currentQuestion.type === 'letter-to-sound' && (
                     <div className="letter-display-container">
-                      <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                      <div className="both-cases-display">
+                        <span className="greek-letter-large">{currentQuestion.letter.greekLetter}</span>
+                        <span className="greek-letter-large">{currentQuestion.letter.greekLowercase}</span>
+                      </div>
                       <span className="case-indicator">({currentQuestion.letter.name})</span>
                     </div>
                   )}
