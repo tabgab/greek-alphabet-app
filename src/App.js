@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { Capacitor } from '@capacitor/core';
 
 // Import components (we'll create these next)
 import Header from './components/Header';
@@ -14,6 +16,26 @@ import { ProgressProvider } from './context/ProgressContext';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('learn');
+
+  // Configure status bar for Android
+  useEffect(() => {
+    const configureStatusBar = async () => {
+      if (Capacitor.isNativePlatform()) {
+        try {
+          // Show the status bar
+          await StatusBar.show();
+          // Set style to dark (dark text on light background)
+          await StatusBar.setStyle({ style: Style.Dark });
+          // Set background color to match header gradient
+          await StatusBar.setBackgroundColor({ color: '#667eea' });
+        } catch (error) {
+          console.error('Error configuring status bar:', error);
+        }
+      }
+    };
+
+    configureStatusBar();
+  }, []);
 
   const renderSection = () => {
     switch (currentSection) {
