@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { greekAlphabet } from '../greekAlphabetData';
+import { storage } from '../utils/storage';
 
 const ProgressContext = createContext();
 
@@ -12,10 +13,9 @@ export const useProgress = () => {
 };
 
 export const ProgressProvider = ({ children }) => {
-  // Initialize state from localStorage or defaults
+  // Initialize state from storage or defaults
   const [userProgress, setUserProgress] = useState(() => {
-    const saved = localStorage.getItem('greek-alphabet-progress');
-    const defaultProgress = {
+    return {
       completedLetters: [],
       scores: {},
       currentLevel: 1,
@@ -23,10 +23,10 @@ export const ProgressProvider = ({ children }) => {
       streakCount: 0,
       lastPracticeDate: null,
       achievements: [],
-      unlockedLetters: [1, 2, 3, 4, 5], // Start with first 5 letters (Alpha, Beta, Gamma, Delta, Epsilon)
+      unlockedLetters: [1, 2, 3, 4, 5],
       phraseScores: {},
       completedPhrases: [],
-      unlockedPhrases: [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 33, 34, 46, 47, 50], // Start with basic phrases
+      unlockedPhrases: [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 33, 34, 46, 47, 50],
       exerciseStats: {
         totalQuestions: 0,
         correctAnswers: 0,
@@ -44,49 +44,94 @@ export const ProgressProvider = ({ children }) => {
         monthlyGoal: false
       }
     };
-
-    if (saved) {
-      const loadedProgress = JSON.parse(saved);
-      // Ensure at least 5 letters are unlocked for users with existing data
-      if (!loadedProgress.unlockedLetters || loadedProgress.unlockedLetters.length < 5) {
-        loadedProgress.unlockedLetters = [1, 2, 3, 4, 5];
-      }
-      // Ensure exerciseStats exists with all required fields
-      if (!loadedProgress.exerciseStats) {
-        loadedProgress.exerciseStats = defaultProgress.exerciseStats;
-      } else {
-        // Ensure all exerciseStats fields exist
-        loadedProgress.exerciseStats = {
-          ...defaultProgress.exerciseStats,
-          ...loadedProgress.exerciseStats
-        };
-      }
-      // Ensure milestones exists
-      if (!loadedProgress.milestones) {
-        loadedProgress.milestones = defaultProgress.milestones;
-      }
-      // Ensure unlockedPhrases exists
-      if (!loadedProgress.unlockedPhrases) {
-        loadedProgress.unlockedPhrases = defaultProgress.unlockedPhrases;
-      }
-      // Ensure phraseScores exists
-      if (!loadedProgress.phraseScores) {
-        loadedProgress.phraseScores = {};
-      }
-      // Ensure completedPhrases exists
-      if (!loadedProgress.completedPhrases) {
-        loadedProgress.completedPhrases = [];
-      }
-      return loadedProgress;
-    }
-    
-    return defaultProgress;
   });
 
-  // Save progress to localStorage whenever it changes
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load progress from storage on mount
   useEffect(() => {
-    localStorage.setItem('greek-alphabet-progress', JSON.stringify(userProgress));
-  }, [userProgress]);
+    const loadProgress = async () => {
+      try {
+        const saved = await storage.getItem('greek-alphabet-progress');
+        if (saved) {
+          const loadedProgress = JSON.parse(saved);
+          
+          // Ensure at least 5 letters are unlocked for users with existing data
+          if (!loadedProgress.unlockedLetters || loadedProgress.unlockedLetters.length < 5) {
+            loadedProgress.unlockedLetters = [1, 2, 3, 4, 5];
+          }
+          
+          // Ensure all required fields exist
+          const defaultProgress = {
+            completedLetters: [],
+            scores: {},
+            currentLevel: 1,
+            totalScore: 0,
+            streakCount: 0,
+            lastPracticeDate: null,
+            achievements: [],
+            unlockedLetters: [1, 2, 3, 4, 5],
+            phraseScores: {},
+            completedPhrases: [],
+            unlockedPhrases: [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 33, 34, 46, 47, 50],
+            exerciseStats: {
+              totalQuestions: 0,
+              correctAnswers: 0,
+              currentStreak: 0,
+              bestStreak: 0,
+              totalScore: 0,
+              averageScore: 0,
+              studyTimeMinutes: 0,
+              longestStreak: 0
+            },
+            milestones: {
+              lettersCompleted: 0,
+              perfectScores: 0,
+              weeklyGoal: false,
+              monthlyGoal: false
+            }
+          };
+          
+          if (!loadedProgress.exerciseStats) {
+            loadedProgress.exerciseStats = defaultProgress.exerciseStats;
+          } else {
+            loadedProgress.exerciseStats = {
+              ...defaultProgress.exerciseStats,
+              ...loadedProgress.exerciseStats
+            };
+          }
+          
+          if (!loadedProgress.milestones) {
+            loadedProgress.milestones = defaultProgress.milestones;
+          }
+          if (!loadedProgress.unlockedPhrases) {
+            loadedProgress.unlockedPhrases = defaultProgress.unlockedPhrases;
+          }
+          if (!loadedProgress.phraseScores) {
+            loadedProgress.phraseScores = {};
+          }
+          if (!loadedProgress.completedPhrases) {
+            loadedProgress.completedPhrases = [];
+          }
+          
+          setUserProgress(loadedProgress);
+        }
+      } catch (error) {
+        console.error('Error loading progress:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadProgress();
+  }, []);
+
+  // Save progress to storage whenever it changes
+  useEffect(() => {
+    if (!isLoading) {
+      storage.setItem('greek-alphabet-progress', JSON.stringify(userProgress));
+    }
+  }, [userProgress, isLoading]);
 
   // Mark a letter as completed
   const markLetterCompleted = (letterId) => {
@@ -431,7 +476,7 @@ export const ProgressProvider = ({ children }) => {
     };
 
     setUserProgress(initialProgress);
-    localStorage.setItem('greek-alphabet-progress', JSON.stringify(initialProgress));
+    storage.setItem('greek-alphabet-progress', JSON.stringify(initialProgress));
   };
 
   const value = {
