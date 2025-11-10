@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { greekPhrases, phraseCategories, getPhrasesByCategory, getPhrasesByDifficulty } from '../greekPhrasesData';
 import { useProgress } from '../context/ProgressContext';
+import { speakGreek } from '../utils/audio';
 
 const PhrasesSection = () => {
   const { isPhraseUnlocked, isPhraseCompleted, getBestPhraseScore, updatePhraseScore } = useProgress();
@@ -8,82 +9,40 @@ const PhrasesSection = () => {
   const [selectedPhrase, setSelectedPhrase] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [difficultyFilter, setDifficultyFilter] = useState('all');
-  const [learnedFilter, setLearnedFilter] = useState('all'); // 'all', 'learned', 'unlearned'
-  // Function to speak Greek phrases using Web Speech API
-  const speakGreek = (text) => {
-    if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
+  const [learnedFilter, setLearnedFilter] = useState('all');
 
-      const utterance = new SpeechSynthesisUtterance(text);
-
-      // Try to find a Greek voice
-      const availableVoices = window.speechSynthesis.getVoices();
-      const greekVoice = availableVoices.find(voice =>
-        voice.lang.startsWith('el') || // Modern Greek
-        voice.lang.startsWith('grc') || // Ancient Greek
-        voice.name.toLowerCase().includes('greek')
-      );
-
-      if (greekVoice) {
-        utterance.voice = greekVoice;
-        utterance.lang = greekVoice.lang;
-      } else {
-        // Fallback to Greek language code
-        utterance.lang = 'el-GR';
-      }
-
-      utterance.rate = 0.7; // Slightly slower for learning
-      utterance.pitch = 1.0;
-
-      // Speak the text
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.warn('Speech synthesis not supported in this browser');
-    }
-  };
-
-  // Function to speak pronunciation guide
-  const speakPronunciation = (pronunciation) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-
-      const utterance = new SpeechSynthesisUtterance(pronunciation);
-      utterance.lang = 'en-US'; // English pronunciation guide
-      utterance.rate = 0.6; // Slower for clarity
-      utterance.pitch = 1.1;
-
-      window.speechSynthesis.speak(utterance);
+  // Function to speak Greek phrases using improved audio utility
+  const handleSpeak = async (text, rate = 0.7) => {
+    try {
+      await speakGreek(text, { rate });
+    } catch (error) {
+      console.error('Failed to speak:', error);
     }
   };
 
   // Mark phrase as learned/practiced
   const markPhraseAsLearned = (phraseId) => {
-    updatePhraseScore(phraseId, 100); // Mark as fully learned
+    updatePhraseScore(phraseId, 100);
   };
 
   // Get filtered phrases based on current filters
   const getFilteredPhrases = () => {
     let phrases;
     
-    // Use getPhrasesByDifficulty when filtering by difficulty for better performance
     if (difficultyFilter !== 'all' && selectedCategory === 'all') {
       const maxDifficulty = parseInt(difficultyFilter);
       phrases = getPhrasesByDifficulty(maxDifficulty);
     } else {
       phrases = selectedCategory === 'all' ? greekPhrases : getPhrasesByCategory(selectedCategory);
       
-      // Apply difficulty filter for specific categories
       if (difficultyFilter !== 'all') {
         const maxDifficulty = parseInt(difficultyFilter);
         phrases = phrases.filter(phrase => phrase.difficulty <= maxDifficulty);
       }
     }
 
-    // Only show unlocked phrases
     phrases = phrases.filter(phrase => isPhraseUnlocked(phrase.id));
 
-    // Apply search filter
     if (searchTerm) {
       phrases = phrases.filter(phrase =>
         phrase.greek.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,7 +51,6 @@ const PhrasesSection = () => {
       );
     }
 
-    // Apply learned filter
     if (learnedFilter === 'learned') {
       phrases = phrases.filter(phrase => isPhraseCompleted(phrase.id));
     } else if (learnedFilter === 'unlearned') {
@@ -104,7 +62,6 @@ const PhrasesSection = () => {
 
   const filteredPhrases = getFilteredPhrases();
 
-  // Category statistics
   const getCategoryStats = (category) => {
     const categoryPhrases = category === 'all' ? greekPhrases : getPhrasesByCategory(category);
     const learned = categoryPhrases.filter(phrase => isPhraseCompleted(phrase.id)).length;
@@ -154,7 +111,7 @@ const PhrasesSection = () => {
                 className="pronunciation-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  speakGreek(phrase.greek);
+                  handleSpeak(phrase.greek);
                 }}
                 title="Listen to Greek pronunciation"
               >
@@ -196,7 +153,7 @@ const PhrasesSection = () => {
               <span className="detail-greek">{phrase.greek}</span>
               <button
                 className="pronunciation-btn-large"
-                onClick={() => speakGreek(phrase.greek)}
+                onClick={() => handleSpeak(phrase.greek)}
                 title="Listen to Greek pronunciation"
               >
                 🔊
@@ -226,7 +183,7 @@ const PhrasesSection = () => {
             <span className="greek-text">{phrase.greek}</span>
             <button
               className="play-btn"
-              onClick={() => speakGreek(phrase.greek)}
+              onClick={() => handleSpeak(phrase.greek)}
               title="Listen to pronunciation"
             >
               🔊 Play
@@ -240,7 +197,7 @@ const PhrasesSection = () => {
             <span className="pronunciation-text">[{phrase.pronunciation}]</span>
             <button
               className="play-btn"
-              onClick={() => speakPronunciation(phrase.pronunciation)}
+              onClick={() => handleSpeak(phrase.pronunciation, 0.6)}
               title="Listen to pronunciation guide"
             >
               🎯 Play Guide
@@ -265,18 +222,13 @@ const PhrasesSection = () => {
           <div className="practice-buttons">
             <button
               className="practice-btn"
-              onClick={() => speakGreek(phrase.greek)}
+              onClick={() => handleSpeak(phrase.greek, 0.7)}
             >
               🔄 Repeat
             </button>
             <button
               className="practice-btn"
-              onClick={() => {
-                const utterance = new SpeechSynthesisUtterance(phrase.greek);
-                utterance.lang = 'el-GR';
-                utterance.rate = 0.5;
-                window.speechSynthesis.speak(utterance);
-              }}
+              onClick={() => handleSpeak(phrase.greek, 0.5)}
             >
               🐌 Slow
             </button>

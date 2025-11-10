@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { greekAlphabet } from '../greekAlphabetData';
 import { useProgress } from '../context/ProgressContext';
+import { speakGreek } from '../utils/audio';
 
 // Pictogram mapping for visual learning
 const pictogramMap = {
@@ -99,35 +100,13 @@ const LearnSection = () => {
   const [selectedLetter, setSelectedLetter] = useState(null);
   const [filter, setFilter] = useState('available'); // 'all', 'available', 'locked', 'vowels', 'consonants'
 
-  // Function to pronounce Greek words using Web Speech API
-  const speakGreek = (text) => {
-    if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
-
-      const utterance = new SpeechSynthesisUtterance(text);
-
-      // Try to find a Greek voice
-      const voices = window.speechSynthesis.getVoices();
-      const greekVoice = voices.find(voice =>
-        voice.lang.startsWith('el') || // Modern Greek
-        voice.lang.startsWith('grc') || // Ancient Greek
-        voice.name.toLowerCase().includes('greek')
-      );
-
-      if (greekVoice) {
-        utterance.voice = greekVoice;
-        utterance.lang = greekVoice.lang;
-      } else {
-        // Fallback to English with Greek text
-        utterance.lang = 'el-GR';
-        utterance.rate = 0.8; // Slightly slower for clarity
-      }
-
-      // Speak the text
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.warn('Speech synthesis not supported in this browser');
+  // Function to pronounce Greek words using improved audio utility
+  const handleSpeak = async (text) => {
+    try {
+      await speakGreek(text, { rate: 0.8 });
+    } catch (error) {
+      console.error('Failed to speak:', error);
+      // You could show a user-friendly error message here
     }
   };
 
@@ -302,7 +281,7 @@ const LearnSection = () => {
                         <span className="greek-word-text">{greekWord}</span>
                         <button
                           className="pronunciation-btn"
-                          onClick={() => speakGreek(greekWord)}
+                          onClick={() => handleSpeak(greekWord)}
                           aria-label={`Pronounce ${greekWord}`}
                           title={`Hear pronunciation of ${greekWord}`}
                         >
