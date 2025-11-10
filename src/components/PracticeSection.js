@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useProgress } from '../context/ProgressContext';
+import { speakGreek } from '../utils/audio';
 
 // Exercise configuration with multiple question patterns
 const EXERCISE_TYPES = {
@@ -56,32 +57,11 @@ const PracticeSection = () => {
   const [showSoundIdWord, setShowSoundIdWord] = useState(false); // Track if Sound ID word is visible
 
   // Function to play letter sound for listening exercises
-  const playLetterSound = (sound) => {
-    if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
-
-      const utterance = new SpeechSynthesisUtterance(sound);
-
-      // Try to find a Greek voice for better pronunciation
-      const voices = window.speechSynthesis.getVoices();
-      const greekVoice = voices.find(voice =>
-        voice.lang.startsWith('el') ||
-        voice.lang.startsWith('grc') ||
-        voice.name.toLowerCase().includes('greek')
-      );
-
-      if (greekVoice) {
-        utterance.voice = greekVoice;
-        utterance.lang = greekVoice.lang;
-      } else {
-        utterance.lang = 'el-GR';
-      }
-
-      utterance.rate = 0.7; // Slower for clarity in listening exercises
-      utterance.pitch = 1.1; // Slightly higher pitch for clarity
-
-      window.speechSynthesis.speak(utterance);
+  const playLetterSound = async (sound) => {
+    try {
+      await speakGreek(sound, { rate: 0.7, pitch: 1.1 });
+    } catch (error) {
+      console.error('Failed to play sound:', error);
     }
   };
 

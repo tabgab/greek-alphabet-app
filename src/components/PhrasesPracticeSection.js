@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { greekPhrases, phraseCategories, getPhrasesByCategory } from '../greekPhrasesData';
 import { useProgress } from '../context/ProgressContext';
+import { speakGreek } from '../utils/audio';
 
 // Exercise types for phrases
 const PHRASE_EXERCISE_TYPES = {
@@ -41,27 +42,12 @@ const PhrasesPracticeSection = () => {
   const [score, setScore] = useState(0);
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
 
-  // Function to play phrase audio
-  const speakGreek = (text, rate = 0.7) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      
-      const voices = window.speechSynthesis.getVoices();
-      const greekVoice = voices.find(voice => 
-        voice.lang.startsWith('el') || voice.name.toLowerCase().includes('greek')
-      );
-
-      if (greekVoice) {
-        utterance.voice = greekVoice;
-        utterance.lang = greekVoice.lang;
-      } else {
-        utterance.lang = 'el-GR';
-      }
-
-      utterance.rate = rate;
-      utterance.pitch = 1.0;
-      window.speechSynthesis.speak(utterance);
+  // Function to play phrase audio using native TTS
+  const handleSpeak = async (text, rate = 0.7) => {
+    try {
+      await speakGreek(text, { rate });
+    } catch (error) {
+      console.error('Failed to speak:', error);
     }
   };
 
@@ -174,7 +160,7 @@ const PhrasesPracticeSection = () => {
     
     // Auto-play audio for pronunciation exercises
     if (exerciseType === 'pronunciation-matching' && firstQuestion.audioPhrase) {
-      setTimeout(() => speakGreek(firstQuestion.audioPhrase), 500);
+      setTimeout(() => handleSpeak(firstQuestion.audioPhrase), 500);
     }
 
     setSelectedAnswer(null);
@@ -228,7 +214,7 @@ const PhrasesPracticeSection = () => {
 
     // Auto-play audio for pronunciation exercises
     if (selectedExerciseType === 'pronunciation-matching' && newQuestion.audioPhrase) {
-      setTimeout(() => speakGreek(newQuestion.audioPhrase), 300);
+      setTimeout(() => handleSpeak(newQuestion.audioPhrase), 300);
     }
   };
 
@@ -425,7 +411,7 @@ const PhrasesPracticeSection = () => {
                     <span className="greek-phrase-large">{currentQuestion.greekPhrase}</span>
                     <button
                       className="play-phrase-btn"
-                      onClick={() => speakGreek(currentQuestion.greekPhrase)}
+                      onClick={() => handleSpeak(currentQuestion.greekPhrase)}
                       title="Listen to pronunciation"
                     >
                       🔊 Play
@@ -438,13 +424,13 @@ const PhrasesPracticeSection = () => {
                     <div className="audio-controls">
                       <button
                         className="practice-btn"
-                        onClick={() => speakGreek(currentQuestion.audioPhrase)}
+                        onClick={() => handleSpeak(currentQuestion.audioPhrase)}
                       >
                         🔊 Play Greek Phrase
                       </button>
                       <button
                         className="practice-btn"
-                        onClick={() => speakGreek(currentQuestion.audioPhrase, 0.4)}
+                        onClick={() => handleSpeak(currentQuestion.audioPhrase, 0.4)}
                       >
                         🐌 Play Slowly
                       </button>
@@ -494,7 +480,7 @@ const PhrasesPracticeSection = () => {
                         className="pronunciation-btn"
                         onClick={(e) => {
                           e.stopPropagation();
-                          speakGreek(option);
+                          handleSpeak(option);
                         }}
                         title="Listen to pronunciation"
                         style={{
