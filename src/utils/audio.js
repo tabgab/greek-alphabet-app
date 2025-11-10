@@ -1,147 +1,125 @@
 import { Capacitor } from '@capacitor/core';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 /**
  * Audio utility for handling Greek pronunciation
- * Works on both web and Android using Web Speech API
+ * Uses native TTS on Android and Web Speech API on web
  */
 
 const isNative = Capacitor.isNativePlatform();
 
-// Cache voices when they're loaded
-let voicesCache = [];
-let voicesLoaded = false;
-
-// Load voices
-const loadVoices = () => {
-  if (typeof window === 'undefined' || !window.speechSynthesis) {
-    return;
-  }
-
-  const voices = window.speechSynthesis.getVoices();
-  if (voices.length > 0) {
-    voicesCache = voices;
-    voicesLoaded = true;
-  }
-};
-
-// Initialize voices
-if (typeof window !== 'undefined' && window.speechSynthesis) {
-  // Load voices initially
-  loadVoices();
-  
-  // Also listen for voices changed event (important for Chrome/Android)
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
-  }
-}
-
 /**
- * Find the best Greek voice available
+ * Speak Greek text using native TTS or Web Speech API
  */
-const findGreekVoice = () => {
-  if (!voicesLoaded) {
-    loadVoices();
-  }
+export const speakGreek = async (text, options = {}) => {
+  const rate = options.rate || 0.8;
+  const pitch = options.pitch || 1.0;
+  const volume = options.volume || 1.0;
 
-  // Try to find a Greek voice
-  const greekVoice = voicesCache.find(voice =>
-    voice.lang.startsWith('el') || // Modern Greek
-    voice.lang.startsWith('grc') || // Ancient Greek
-    voice.name.toLowerCase().includes('greek')
-  );
+  try {
+    if (isNative) {
+      // Use native TTS plugin on Android
+      await TextToSpeech.speak({
+        text: text,
+        lang: 'el-GR', // Greek language
+        rate: rate,
+        pitch: pitch,
+        volume: volume,
+        category: 'ambient'
+      });
+    } else {
+      // Use Web Speech API on web
+      return new Promise((resolve, reject) => {
+        if (!window.speechSynthesis) {
+          reject(new Error('Speech synthesis not supported'));
+          return;
+        }
 
-  return greekVoice || null;
-};
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
 
-/**
- * Speak Greek text with proper configuration
- */
-export const speakGreek = (text, options = {}) => {
-  return new Promise((resolve, reject) => {
-    // Check if speech synthesis is supported
-    if (typeof window === 'undefined' || !window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
-      reject(new Error('Speech synthesis not supported'));
-      return;
-    }
-
-    try {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
-
-      // Ensure voices are loaded
-      if (!voicesLoaded) {
-        loadVoices();
-      }
-
-      // Wait a bit for voices to load on Android
-      setTimeout(() => {
         const utterance = new SpeechSynthesisUtterance(text);
-
-        // Try to use Greek voice
-        const greekVoice = findGreekVoice();
         
+        // Try to find Greek voice
+        const voices = window.speechSynthesis.getVoices();
+        const greekVoice = voices.find(voice =>
+          voice.lang.startsWith('el') ||
+          voice.lang.startsWith('grc') ||
+          voice.name.toLowerCase().includes('greek')
+        );
+
         if (greekVoice) {
           utterance.voice = greekVoice;
           utterance.lang = greekVoice.lang;
         } else {
-          // Fallback to Greek locale
           utterance.lang = 'el-GR';
         }
 
-        // Configure speech parameters
-        utterance.rate = options.rate || 0.8; // Slower for clarity
-        utterance.pitch = options.pitch || 1.0;
-        utterance.volume = options.volume || 1.0;
+        utterance.rate = rate;
+        utterance.pitch = pitch;
+        utterance.volume = volume;
 
-        // Add event handlers
-        utterance.onend = () => {
-          resolve();
-        };
+        utterance.onend = () => resolve();
+        utterance.onerror = (event) => reject(event);
 
-        utterance.onerror = (event) => {
-          console.error('Speech synthesis error:', event);
-          reject(event);
-        };
-
-        // Speak the text
         window.speechSynthesis.speak(utterance);
-      }, isNative ? 100 : 0); // Small delay on native platforms
-    } catch (error) {
-      console.error('Error in speakGreek:', error);
-      reject(error);
+      });
     }
-  });
+  } catch (error) {
+    console.error('Error speaking:', error);
+    throw error;
+  }
 };
 
 /**
  * Stop any ongoing speech
  */
-export const stopSpeech = () => {
-  if (typeof window !== 'undefined' && window.speechSynthesis) {
-    window.speechSynthesis.cancel();
+export const stopSpeech = async () => {
+  try {
+    if (isNative) {
+      await TextToSpeech.stop();
+    } else if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  } catch (error) {
+    console.error('Error stopping speech:', error);
   }
 };
 
 /**
- * Check if speech synthesis is available
+ * Check if TTS is available
  */
-export const isSpeechAvailable = () => {
-  return typeof window !== 'undefined' && 
-         window.speechSynthesis !== undefined;
+export const isSpeechAvailable = async () => {
+  try {
+    if (isNative) {
+      // Check if TTS is supported on the device
+      const result = await TextToSpeech.getSupportedLanguages();
+      return result && result.languages && result.languages.length > 0;
+    } else {
+      return typeof window !== 'undefined' && 
+             window.speechSynthesis !== undefined;
+    }
+  } catch (error) {
+    console.error('Error checking speech availability:', error);
+    return false;
+  }
 };
 
 /**
- * Get available Greek voices
+ * Get supported languages (mainly for native)
  */
-export const getGreekVoices = () => {
-  if (!voicesLoaded) {
-    loadVoices();
+export const getSupportedLanguages = async () => {
+  try {
+    if (isNative) {
+      const result = await TextToSpeech.getSupportedLanguages();
+      return result.languages || [];
+    } else {
+      // For web, return available voices
+      const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+      return voices.map(voice => voice.lang);
+    }
+  } catch (error) {
+    console.error('Error getting supported languages:', error);
+    return [];
   }
-
-  return voicesCache.filter(voice =>
-    voice.lang.startsWith('el') ||
-    voice.lang.startsWith('grc') ||
-    voice.name.toLowerCase().includes('greek')
-  );
 };
