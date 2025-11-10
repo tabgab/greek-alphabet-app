@@ -22,6 +22,8 @@ function App() {
     const configureStatusBar = async () => {
       if (Capacitor.isNativePlatform()) {
         try {
+          // CRITICAL: Prevent WebView from drawing under status bar
+          await StatusBar.setOverlaysWebView({ overlay: false });
           // Show the status bar
           await StatusBar.show();
           // Set style to dark (dark text on light background)
